@@ -91,7 +91,7 @@ export class GatherExecution implements IGatherExecution, INotebookExecutionLogg
         const program = slices.length > 0 ? slices[0].cellSlices.reduce(concat, '').replace(/#%%/g, defaultCellMarker) : '';
 
         // Add a comment at the top of the file explaining what gather does
-        const descriptor = '# This file contains the minimal amount of code required to produce the code cell you gathered.\n';
+        const descriptor = '# This file contains the minimal amount of code required to produce the code cell gathered.\n';
         return descriptor.concat(program);
     }
 

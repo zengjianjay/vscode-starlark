@@ -109,28 +109,29 @@ export function hasCells(document: TextDocument, settings?: IDataScienceSettings
     return false;
 }
 
-export function generateCellRangesFromString(source: string, settings?: IDataScienceSettings): { range: Range; title: string; cell_type: string }[] {
+function generateCellRangesFromStringArray(lines: string[], settings?: IDataScienceSettings): { range: Range; title: string; cell_type: string }[] {
     const matcher = new CellMatcher(settings);
     const cells: { range: Range; title: string; cell_type: string }[] = [];
-    const lines: string[] = source.splitLines({ trim: true, removeEmptyEntries: false });
 
     for (let index = 0; index < lines.length; index += 1) {
         if (matcher.isCell(lines[index])) {
 
             // We have a cell, find the next cell
-            let j = index + 1;
-            while (j < lines.length && !matcher.isCell(lines[j])) {
-                j += 1;
+            let endCellIndex = index + 1;
+            while (endCellIndex < lines.length && !matcher.isCell(lines[endCellIndex])) {
+                endCellIndex += 1;
             }
+            endCellIndex -= 1; // Get last line of cell.
 
             const result = matcher.exec(lines[index]);
             if (result !== undefined) {
                 cells.push({
-                    range: new Range(index, 0, j - 1, lines[j - 1].length),
+                    range: new Range(index + 1, 0, endCellIndex, lines[endCellIndex].length),
                     title: result,
                     cell_type: matcher.getCellType(lines[index])
                 });
             }
+            index = endCellIndex;
         }
     }
 
@@ -138,20 +139,22 @@ export function generateCellRangesFromString(source: string, settings?: IDataSci
 }
 
 export function generateCellsFromString(source: string, settings?: IDataScienceSettings): ICell[] {
-    // Get our ranges. They'll determine our cells
-    const ranges = generateCellRangesFromString(source, settings);
+    const lines: string[] = source.splitLines({ trim: false, removeEmptyEntries: false });
 
-    const lines: string[] = source.splitLines();
+    // Get our ranges. They'll determine our cells
+    const ranges = generateCellRangesFromStringArray(lines, settings);
 
     // For each one, get its text and turn it into a cell
     return Array.prototype.concat(...ranges.map(r => {
-        const code = lines.slice(r.range.start.line, r.range.end.line).join('');
+        const code = lines.slice(r.range.start.line, r.range.end.line).join('\n');
         return generateCells(settings, code, '', r.range.start.line, false, uuid());
     }));
 }
 
 export function generateCellRangesFromDocument(document: TextDocument, settings?: IDataScienceSettings): { range: Range; title: string; cell_type: string }[] {
-    return generateCellRangesFromString(document.getText(), settings);
+    const lines: string[] = document.getText().splitLines({ trim: false, removeEmptyEntries: false });
+
+    return generateCellRangesFromStringArray(lines, settings);
 }
 
 export function generateCellsFromDocument(document: TextDocument, settings?: IDataScienceSettings): ICell[] {

@@ -1,8 +1,7 @@
 import { inject, injectable } from 'inversify';
-import { Event, EventEmitter, Position, ViewColumn } from 'vscode';
-import { IApplicationShell, IDocumentManager } from '../../common/application/types';
-import { PYTHON_LANGUAGE } from '../../common/constants';
-import { IFileSystem } from '../../common/platform/types';
+import * as uuid from 'uuid/v4';
+import { Event, EventEmitter } from 'vscode';
+import { IApplicationShell } from '../../common/application/types';
 import { noop } from '../../common/utils/misc';
 import { generateCellsFromString } from '../cellFactory';
 import { InteractiveWindowMessages } from '../interactive-common/interactiveWindowTypes';
@@ -16,10 +15,8 @@ export class GatherListener implements IInteractiveWindowListener {
     constructor(
         @inject(INotebookExporter) private jupyterExporter: INotebookExporter,
         @inject(INotebookEditorProvider) private ipynbProvider: INotebookEditorProvider,
-        @inject(IDocumentManager) private documentManager: IDocumentManager,
         @inject(IApplicationShell) private applicationShell: IApplicationShell,
-        @inject(IGatherExecution) private gatherExecution: IGatherExecution,
-        @inject(IFileSystem) private fileSystem: IFileSystem) { }
+        @inject(IGatherExecution) private gatherExecution: IGatherExecution) { }
 
     public dispose() {
         noop();
@@ -57,44 +54,27 @@ export class GatherListener implements IInteractiveWindowListener {
 
     private gatherCodeInternal = async (cell: ICell) => {
         const slicedProgram = this.gatherExecution.gatherCode(cell);
+        const newuri = await this.ipynbProvider.getNextNewNotebookUri();
 
-        // Don't want to open the gathered code on top of the interactive window
-        let viewColumn: ViewColumn | undefined;
-        const fileNameMatch = this.documentManager.visibleTextEditors.filter(textEditor => this.fileSystem.arePathsSame(textEditor.document.fileName, cell.file));
-        const definedVisibleEditors = this.documentManager.visibleTextEditors.filter(textEditor => textEditor.viewColumn !== undefined);
-        if (this.documentManager.visibleTextEditors.length > 0 && fileNameMatch.length > 0) {
-            // Original file is visible
-            viewColumn = fileNameMatch[0].viewColumn;
-        } else if (this.documentManager.visibleTextEditors.length > 0 && definedVisibleEditors.length > 0) {
-            // There is a visible text editor, just not the original file. Make sure viewColumn isn't undefined
-            viewColumn = definedVisibleEditors[0].viewColumn;
-        } else {
-            // Only one panel open and interactive window is occupying it, or original file is open but hidden
-            viewColumn = ViewColumn.Beside;
-        }
+        let cells: ICell[] = [{
+            id: uuid(),
+            file: '',
+            line: 0,
+            state: 0,
+            executedInCurrentKernel: false,
+            data: {
+                cell_type: 'markdown',
+                source: '## This notebook was generated for a gathered cell.',
+                metadata: {}
+            }
+        }];
 
         // Create new notebook with the returned program and open it.
-        const cells: ICell[] = generateCellsFromString(slicedProgram);
-        if (cells.length === 0) {
-            return;
-        }
+        cells = cells.concat(generateCellsFromString(slicedProgram));
 
         const notebook = await this.jupyterExporter.translateToNotebook(cells);
         const contents = JSON.stringify(notebook);
 
-        const newuri = await this.ipynbProvider.getNextNewNotebookUri();
-        await (await this.ipynbProvider.open(newuri, contents)).show();
-
-        // Create a new open editor with the returned program in the right panel
-        const doc = await this.documentManager.openTextDocument({
-            content: slicedProgram,
-            language: PYTHON_LANGUAGE
-        });
-        const editor = await this.documentManager.showTextDocument(doc, viewColumn);
-
-        // Edit the document so that it is dirty (add a space at the end)
-        editor.edit((editBuilder) => {
-            editBuilder.insert(new Position(editor.document.lineCount, 0), '\n');
-        });
+        await this.ipynbProvider.open(newuri, contents);
     }
 }
