@@ -378,5 +378,7 @@
     "DataScience.notebookNotFound" : "python -m jupyter notebook --version is not running",
     "DataScience.findJupyterCommandProgress" : "Active interpreter does not support {0}. Searching for the best available interpreter.",
     "DataScience.findJupyterCommandProgressCheckInterpreter": "Checking {0}.",
-    "DataScience.findJupyterCommandProgressSearchCurrentPath": "Searching current path."
+    "DataScience.findJupyterCommandProgressSearchCurrentPath": "Searching current path.",
+    "DataScience.gatheredScriptDescription": "# This file contains the minimal amount of code required to produce the code cell gathered.\n",
+    "DataScience.gatheredNotebookDescriptionInMarkdown": "## This notebook was generated for a gathered cell."
 }

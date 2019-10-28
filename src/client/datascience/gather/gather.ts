@@ -91,7 +91,7 @@ export class GatherExecution implements IGatherExecution, INotebookExecutionLogg
         const program = slices.length > 0 ? slices[0].cellSlices.reduce(concat, '').replace(/#%%/g, defaultCellMarker) : '';
 
         // Add a comment at the top of the file explaining what gather does
-        const descriptor = '# This file contains the minimal amount of code required to produce the code cell gathered.\n';
+        const descriptor = localize.DataScience.gatheredScriptDescription();
         return descriptor.concat(program);
     }
 
@@ -125,7 +125,6 @@ export class GatherExecution implements IGatherExecution, INotebookExecutionLogg
  * Accumulator to concatenate cell slices for a sliced program, preserving cell structures.
  */
 function concat(existingText: string, newText: CellSlice): string {
-    // tslint:disable-next-line: jsdoc-format
     // Include our cell marker so that cell slices are preserved
     return `${existingText}#%%\n${newText.textSliceLines}\n\n`;
 }

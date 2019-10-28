@@ -2,6 +2,7 @@ import { inject, injectable } from 'inversify';
 import * as uuid from 'uuid/v4';
 import { Event, EventEmitter } from 'vscode';
 import { IApplicationShell } from '../../common/application/types';
+import * as localize from '../../common/utils/localize';
 import { noop } from '../../common/utils/misc';
 import { generateCellsFromString } from '../cellFactory';
 import { InteractiveWindowMessages } from '../interactive-common/interactiveWindowTypes';
@@ -64,7 +65,7 @@ export class GatherListener implements IInteractiveWindowListener {
             executedInCurrentKernel: false,
             data: {
                 cell_type: 'markdown',
-                source: '## This notebook was generated for a gathered cell.',
+                source: localize.DataScience.gatheredNotebookDescriptionInMarkdown(),
                 metadata: {}
             }
         }];
