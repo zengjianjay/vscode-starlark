@@ -596,6 +596,13 @@ export class NativeEditor extends InteractiveBase implements INotebookEditor {
 
         const workspaceData = this.localStorage.get<string>(key);
         if (workspaceData && !this.isUntitled) {
+            // Make sure to clear so we don't use this again.
+            this.localStorage.update(key, undefined);
+
+            // Transfer this to global storage so we use that next time instead
+            const stat = await this.fileSystem.stat(this.file.fsPath);
+            this.globalStorage.update(key, { contents: workspaceData, lastModifiedTimeMs: stat.mtime });
+
             return workspaceData;
         }
     }
