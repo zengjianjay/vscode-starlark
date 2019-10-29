@@ -61,6 +61,7 @@ export interface IMainState {
     isAtBottom: boolean;
     newCellId?: string;
     loadTotal?: number;
+    kernelId?: string;
 }
 
 export interface IFont {
@@ -136,7 +137,7 @@ export function createEmptyCell(id: string | undefined, executionCount: number |
         file: Identifiers.EmptyFileName,
         line: 0,
         state: CellState.finished,
-        executedInCurrentKernel: false
+        executeKernelId: undefined
     };
 }
 
@@ -218,7 +219,7 @@ export function generateCells(filePath: string, repetitions: number): ICell[] {
             file: path.join(filePath, 'foo.py').toLowerCase(),
             line: 1,
             state: key === cellData.length - 1 ? CellState.executing : CellState.finished,
-            executedInCurrentKernel: false,
+            executeKernelId: undefined,
             type: key === 3 ? 'preview' : 'execute',
             data: data
         };

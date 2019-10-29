@@ -575,7 +575,10 @@ export class NativeCell extends React.Component<INativeCellProps> {
         };
         const gatherDisabled = () => {
             return this.props.cellVM.cell.data.execution_count === null ||
-            this.props.cellVM.cell.executedInCurrentKernel === false ||
+            this.props.cellVM.cell.executeKernelId === null ||
+            this.props.cellVM.cell.executeKernelId === undefined ||
+            this.props.stateController.getState().kernelId === null ||
+            this.props.cellVM.cell.executeKernelId !== this.props.stateController.getState().kernelId ||
             this.props.cellVM.cell.data.cell_type !== 'code' ||
             getSettings().enableGather === false;
         };

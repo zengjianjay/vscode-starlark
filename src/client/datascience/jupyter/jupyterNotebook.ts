@@ -273,6 +273,10 @@ export class JupyterNotebookBase implements INotebook {
         });
     }
 
+    public getKernelId(): string | undefined {
+        return this.session.getKernelId();
+    }
+
     public async getSysInfo(): Promise<ICell> {
         // tslint:disable-next-line:no-multiline-string
         const versionCells = await this.executeSilently(`import sys\r\nsys.version`);
@@ -302,7 +306,7 @@ export class JupyterNotebookBase implements INotebook {
             file: '',
             line: 0,
             state: CellState.finished,
-            executedInCurrentKernel: true
+            executeKernelId: this.getKernelId()
         };
     }
 

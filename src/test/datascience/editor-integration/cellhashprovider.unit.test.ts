@@ -69,7 +69,7 @@ suite('CellHashProvider Unit Tests', () => {
             },
             id: '1',
             state: CellState.init,
-            executedInCurrentKernel: false
+            executeKernelId: undefined
         };
         return hashProvider.preExecute(cell, false);
     }

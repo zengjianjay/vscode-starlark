@@ -59,6 +59,7 @@ import {
     IJupyterDebugger,
     IJupyterExecution,
     IJupyterVariables,
+    INotebook,
     INotebookEditor,
     INotebookEditorProvider,
     INotebookExporter,
@@ -382,7 +383,7 @@ export class NativeEditor extends InteractiveBase implements INotebookEditor {
                     file: Identifiers.EmptyFileName,
                     line: 0,
                     state: CellState.error,
-                    executedInCurrentKernel: true
+                    executeKernelId: this.getNotebook() ? (<INotebook>this.getNotebook()).getKernelId() : undefined
                 }
             ]);
 
@@ -417,6 +418,12 @@ export class NativeEditor extends InteractiveBase implements INotebookEditor {
         cells.forEach(c => {
             const index = this.visibleCells.findIndex(v => v.id === c.id);
             this.visibleCells[index] = c;
+            if (c.state === CellState.executing) {
+                const n = this.getNotebook();
+                if (n !== undefined) {
+                    c.executeKernelId = n.getKernelId();
+                }
+            }
         });
 
         // Indicate dirty
@@ -516,7 +523,7 @@ export class NativeEditor extends InteractiveBase implements INotebookEditor {
                 file: Identifiers.EmptyFileName,
                 line: 0,
                 state: CellState.finished,
-                executedInCurrentKernel: false,
+                executeKernelId: undefined,
                 data: c
             };
         }), forceDirty);
@@ -531,7 +538,7 @@ export class NativeEditor extends InteractiveBase implements INotebookEditor {
                 line: 0,
                 file: Identifiers.EmptyFileName,
                 state: CellState.finished,
-                executedInCurrentKernel: false,
+                executeKernelId: undefined,
                 data: {
                     cell_type: 'code',
                     outputs: [],
@@ -857,9 +864,6 @@ export class NativeEditor extends InteractiveBase implements INotebookEditor {
     }
 
     private onRestartKernel() {
-        if (this.cells.length > 0) {
-            this.cells.forEach((c) => { c.executedInCurrentKernel = false; });
-        }
         this.sendCellsToWebView(this.cells);
     }
 }

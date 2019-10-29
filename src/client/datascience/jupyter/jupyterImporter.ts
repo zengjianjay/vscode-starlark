@@ -103,7 +103,7 @@ export class JupyterImporter implements INotebookImporter {
                     file: Identifiers.EmptyFileName,
                     line: 0,
                     state: CellState.finished,
-                    executedInCurrentKernel: false,
+                    executeKernelId: undefined,
                     data: c,
                     type: 'preview'
                 };

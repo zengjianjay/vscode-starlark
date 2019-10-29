@@ -224,7 +224,7 @@ export class MainStateController implements IMessageHandler {
 
             case InteractiveWindowMessages.RestartKernel:
                 // Go through all vms that are currently executing and mark them as finished
-                this.handleRestarted();
+                this.handleRestarted(payload);
                 break;
 
             case InteractiveWindowMessages.StartDebugging:
@@ -966,7 +966,7 @@ export class MainStateController implements IMessageHandler {
         }
     }
 
-    private handleRestarted() {
+    private handleRestarted(payload: string | undefined) {
         this.suspendUpdates();
 
         // When we restart, make sure to turn off all executing cells. They aren't executing anymore
@@ -982,6 +982,7 @@ export class MainStateController implements IMessageHandler {
             this.setState({ cellVMs: newVMs });
         }
         this.setState({ currentExecutionCount: 0 });
+        this.setState({ kernelId: payload });
         this.resumeUpdates();
 
         // Update our variables

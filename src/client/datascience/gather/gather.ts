@@ -77,7 +77,6 @@ export class GatherExecution implements IGatherExecution, INotebookExecutionLogg
      * For a given code cell, returns a string representing a program containing all the code it depends on.
      */
     public gatherCode(vscCell: IVscCell): string {
-        // sliceAllExecutions does a lookup based on executionEventId
         const gatherCell = convertVscToGatherCell(vscCell);
         if (gatherCell === undefined) {
             return '';

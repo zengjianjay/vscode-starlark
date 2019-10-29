@@ -44,7 +44,7 @@ function generateCodeCell(code: string[], file: string, line: number, id: string
         file: file,
         line: line,
         state: CellState.init,
-        executedInCurrentKernel: false
+        executeKernelId: undefined
     };
 
 }
@@ -55,7 +55,7 @@ function generateMarkdownCell(code: string[], file: string, line: number, id: st
         file: file,
         line: line,
         state: CellState.finished,
-        executedInCurrentKernel: false,
+        executeKernelId: undefined,
         data: {
             cell_type: 'markdown',
             source: generateMarkdownFromCodeLines(code),

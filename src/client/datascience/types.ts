@@ -96,6 +96,7 @@ export interface INotebook extends IAsyncDisposable {
     waitForIdle(timeoutInMs: number): Promise<void>;
     interruptKernel(timeoutInMs: number): Promise<InterruptResult>;
     setLaunchingFile(file: string): Promise<void>;
+    getKernelId(): string | undefined;
     getSysInfo(): Promise<ICell | undefined>;
     setMatplotLibStyle(useDark: boolean): Promise<void>;
 }
@@ -161,6 +162,7 @@ export interface IJupyterPasswordConnect {
 export const IJupyterSession = Symbol('IJupyterSession');
 export interface IJupyterSession extends IAsyncDisposable {
     onRestarted: Event<void>;
+    getKernelId(): string | undefined;
     restart(timeout: number): Promise<void>;
     interrupt(timeout: number): Promise<void>;
     waitForIdle(timeout: number): Promise<void>;
@@ -352,7 +354,7 @@ export interface ICell {
     file: string;
     line: number;
     state: CellState;
-    executedInCurrentKernel: boolean;
+    executeKernelId: string | undefined;
     data: nbformat.ICodeCell | nbformat.IRawCell | nbformat.IMarkdownCell | IMessageCell;
     extraLines?: number[];
 }

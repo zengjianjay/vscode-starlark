@@ -36,7 +36,7 @@ suite('JupyterVariables', () => {
             file: '',
             line: 0,
             state: CellState.finished,
-            executedInCurrentKernel: false
+            executeKernelId: undefined
         };
     }
 

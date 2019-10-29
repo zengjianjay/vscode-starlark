@@ -561,7 +561,7 @@ export abstract class InteractiveBase extends WebViewHost<IInteractiveWindowMapp
             file: Identifiers.EmptyFileName,
             line: 0,
             state: CellState.finished,
-            executedInCurrentKernel: false,
+            executeKernelId: undefined,
             data: {
                 cell_type: 'messages',
                 messages: [message],
@@ -589,7 +589,6 @@ export abstract class InteractiveBase extends WebViewHost<IInteractiveWindowMapp
                 case CellState.executing:
                     // Tell the react controls we have an update
                     this.postMessage(InteractiveWindowMessages.UpdateCell, cell).ignoreErrors();
-                    cell.executedInCurrentKernel = true;
                     break;
 
                 case CellState.error:
@@ -689,7 +688,7 @@ export abstract class InteractiveBase extends WebViewHost<IInteractiveWindowMapp
 
             // For a restart, tell our window to reset
             if (reason === SysInfoReason.Restart || reason === SysInfoReason.New) {
-                this.postMessage(InteractiveWindowMessages.RestartKernel).ignoreErrors();
+                this.postMessage(InteractiveWindowMessages.RestartKernel, this.notebook ? this.notebook.getKernelId() : undefined).ignoreErrors();
                 if (this.notebook) {
                     this.jupyterDebugger.onRestart(this.notebook);
                 }
