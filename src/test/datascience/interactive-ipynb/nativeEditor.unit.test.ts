@@ -262,7 +262,7 @@ suite('Data Science - Native Editor', () => {
 
     test('Create new editor and add some cells', async () => {
         const editor = createEditor();
-        await editor.load(baseFile, Uri.parse('file://foo.ipynb'));
+        await editor.load(baseFile, Uri.parse('file:///foo.ipynb'));
         expect(editor.contents).to.be.equal(baseFile);
         editor.onMessage(InteractiveWindowMessages.InsertCell, { index: 0, cell: createEmptyCell('1', 1) });
         expect(editor.cells).to.be.lengthOf(4);
@@ -272,7 +272,7 @@ suite('Data Science - Native Editor', () => {
 
     test('Move cells around', async () => {
         const editor = createEditor();
-        await editor.load(baseFile, Uri.parse('file://foo.ipynb'));
+        await editor.load(baseFile, Uri.parse('file:///foo.ipynb'));
         expect(editor.contents).to.be.equal(baseFile);
         editor.onMessage(InteractiveWindowMessages.SwapCells, { firstCellId: 'NotebookImport#0', secondCellId: 'NotebookImport#1' });
         expect(editor.cells).to.be.lengthOf(3);
@@ -282,7 +282,7 @@ suite('Data Science - Native Editor', () => {
 
     test('Edit/delete cells', async () => {
         const editor = createEditor();
-        await editor.load(baseFile, Uri.parse('file://foo.ipynb'));
+        await editor.load(baseFile, Uri.parse('file:///foo.ipynb'));
         expect(editor.contents).to.be.equal(baseFile);
         expect(editor.isDirty).to.be.equal(false, 'Editor should not be dirty');
         editor.onMessage(InteractiveWindowMessages.EditCell, {
@@ -330,7 +330,7 @@ suite('Data Science - Native Editor', () => {
         return editor;
     }
     test('Editing a notebook will save uncommitted changes into memento', async () => {
-        const file = Uri.parse('file://foo.ipynb');
+        const file = Uri.parse('file:///foo.ipynb');
 
         // Initially nothing in memento
         expect(storage.get(`notebook-storage-${file.toString()}`)).to.be.undefined;
@@ -339,7 +339,7 @@ suite('Data Science - Native Editor', () => {
     });
 
     test('Opening a notebook will restore uncommitted changes', async () => {
-        const file = Uri.parse('file://foo.ipynb');
+        const file = Uri.parse('file:///foo.ipynb');
         when(fileSystem.stat(anything())).thenResolve({ mtime: 1 } as any);
 
         // Initially nothing in memento
@@ -366,7 +366,7 @@ suite('Data Science - Native Editor', () => {
     });
 
     test('Opening a notebook will restore uncommitted changes (ignoring contents of file)', async () => {
-        const file = Uri.parse('file://foo.ipynb');
+        const file = Uri.parse('file:///foo.ipynb');
         when(fileSystem.stat(anything())).thenResolve({ mtime: 1 } as any);
 
         // Initially nothing in memento
@@ -394,7 +394,7 @@ suite('Data Science - Native Editor', () => {
     });
 
     test('Opening a notebook will NOT restore uncommitted changes if file has been modified since', async () => {
-        const file = Uri.parse('file://foo.ipynb');
+        const file = Uri.parse('file:///foo.ipynb');
         when(fileSystem.stat(anything())).thenResolve({ mtime: 1 } as any);
 
         // Initially nothing in memento
@@ -422,7 +422,7 @@ suite('Data Science - Native Editor', () => {
     });
 
     test('Pyton version info will be updated in notebook when a cell has been executed', async () => {
-        const file = Uri.parse('file://foo.ipynb');
+        const file = Uri.parse('file:///foo.ipynb');
 
         const editor = createEditor();
         await editor.load(baseFile, file);
@@ -459,7 +459,7 @@ suite('Data Science - Native Editor', () => {
 
     test('Opening file with local storage but no global will still open with old contents', async () => {
         // This test is really for making sure when a user upgrades to a new extension, we still have their old storage
-        const file = Uri.parse('file://foo.ipynb');
+        const file = Uri.parse('file:///foo.ipynb');
 
         // Initially nothing in memento
         expect(storage.get(`notebook-storage-${file.toString()}`)).to.be.undefined;
