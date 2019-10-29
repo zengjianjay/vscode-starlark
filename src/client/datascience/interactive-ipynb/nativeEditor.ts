@@ -601,7 +601,7 @@ export class NativeEditor extends InteractiveBase implements INotebookEditor {
 
             // Transfer this to global storage so we use that next time instead
             const stat = await this.fileSystem.stat(this.file.fsPath);
-            this.globalStorage.update(key, { contents: workspaceData, lastModifiedTimeMs: stat.mtime });
+            this.globalStorage.update(key, { contents: workspaceData, lastModifiedTimeMs: stat ? stat.mtime : undefined });
 
             return workspaceData;
         }
