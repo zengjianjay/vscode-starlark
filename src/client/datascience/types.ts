@@ -354,7 +354,6 @@ export interface ICell {
     file: string;
     line: number;
     state: CellState;
-    executeKernelId: string | undefined;
     data: nbformat.ICodeCell | nbformat.IRawCell | nbformat.IMarkdownCell | IMessageCell;
     extraLines?: number[];
 }

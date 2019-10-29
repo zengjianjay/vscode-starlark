@@ -305,8 +305,7 @@ export class JupyterNotebookBase implements INotebook {
             id: uuid(),
             file: '',
             line: 0,
-            state: CellState.finished,
-            executeKernelId: this.getKernelId()
+            state: CellState.finished
         };
     }
 

@@ -572,7 +572,6 @@ export abstract class InteractiveBase extends WebViewHost<IInteractiveWindowMapp
             file: Identifiers.EmptyFileName,
             line: 0,
             state: CellState.finished,
-            executeKernelId: undefined,
             data: {
                 cell_type: 'messages',
                 messages: [message],

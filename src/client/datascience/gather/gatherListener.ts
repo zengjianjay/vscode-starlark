@@ -62,7 +62,6 @@ export class GatherListener implements IInteractiveWindowListener {
             file: '',
             line: 0,
             state: 0,
-            executeKernelId: undefined,
             data: {
                 cell_type: 'markdown',
                 source: localize.DataScience.gatheredNotebookDescriptionInMarkdown(),

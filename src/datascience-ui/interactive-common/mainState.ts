@@ -28,6 +28,7 @@ export interface ICellViewModel {
     useQuickEdit?: boolean;
     selected: boolean;
     focused: boolean;
+    hasBeenRun?: boolean;
     inputBlockToggled(id: string): void;
 }
 
@@ -137,7 +138,6 @@ export function createEmptyCell(id: string | undefined, executionCount: number |
         file: Identifiers.EmptyFileName,
         line: 0,
         state: CellState.finished,
-        executeKernelId: undefined
     };
 }
 
@@ -194,7 +194,8 @@ export function createCellVM(inputCell: ICell, settings: IDataScienceSettings | 
         inputBlockCollapseNeeded: (inputLinesCount > 1),
         inputBlockToggled: inputBlockToggled,
         selected: false,
-        focused: false
+        focused: false,
+        hasBeenRun: false
     };
 }
 
@@ -219,7 +220,6 @@ export function generateCells(filePath: string, repetitions: number): ICell[] {
             file: path.join(filePath, 'foo.py').toLowerCase(),
             line: 1,
             state: key === cellData.length - 1 ? CellState.executing : CellState.finished,
-            executeKernelId: undefined,
             type: key === 3 ? 'preview' : 'execute',
             data: data
         };

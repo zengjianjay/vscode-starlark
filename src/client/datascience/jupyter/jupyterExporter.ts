@@ -90,7 +90,6 @@ export class JupyterExporter implements INotebookExporter {
                 file: Identifiers.EmptyFileName,
                 line: 0,
                 state: CellState.finished,
-                executeKernelId: undefined
             };
 
             return [cell, ...cells];

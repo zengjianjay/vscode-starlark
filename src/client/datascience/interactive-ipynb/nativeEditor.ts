@@ -384,7 +384,6 @@ export class NativeEditor extends InteractiveBase implements INotebookEditor {
                     file: Identifiers.EmptyFileName,
                     line: 0,
                     state: CellState.error,
-                    executeKernelId: kernelId
                 }
             ]);
 
@@ -419,12 +418,6 @@ export class NativeEditor extends InteractiveBase implements INotebookEditor {
         cells.forEach(c => {
             const index = this.visibleCells.findIndex(v => v.id === c.id);
             this.visibleCells[index] = c;
-            if (c.state === CellState.executing) {
-                const n = this.getNotebook();
-                if (n !== undefined) {
-                    c.executeKernelId = n.getKernelId();
-                }
-            }
         });
 
         // Indicate dirty
@@ -524,7 +517,6 @@ export class NativeEditor extends InteractiveBase implements INotebookEditor {
                 file: Identifiers.EmptyFileName,
                 line: 0,
                 state: CellState.finished,
-                executeKernelId: undefined,
                 data: c
             };
         }), forceDirty);
@@ -539,7 +531,6 @@ export class NativeEditor extends InteractiveBase implements INotebookEditor {
                 line: 0,
                 file: Identifiers.EmptyFileName,
                 state: CellState.finished,
-                executeKernelId: undefined,
                 data: {
                     cell_type: 'code',
                     outputs: [],
