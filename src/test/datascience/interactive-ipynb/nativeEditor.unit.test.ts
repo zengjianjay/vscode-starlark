@@ -85,6 +85,7 @@ suite('Data Science - Native Editor', () => {
     let jupyterDebugger: IJupyterDebugger;
     let importer: INotebookImporter;
     let storage: MockMemento;
+    let localStorage: MockMemento;
     let storageUpdateSpy: sinon.SinonSpy<[string, any], Thenable<void>>;
     const baseFile = `{
  "cells": [
@@ -185,6 +186,7 @@ suite('Data Science - Native Editor', () => {
 
     setup(() => {
         storage = new MockMemento();
+        localStorage = new MockMemento();
         storageUpdateSpy = sinon.spy(storage, 'update');
         configService = mock(ConfigurationService);
         fileSystem = mock(FileSystem);
@@ -253,7 +255,8 @@ suite('Data Science - Native Editor', () => {
             instance(jupyterDebugger),
             instance(importer),
             instance(dsErrorHandler),
-            storage
+            storage,
+            localStorage
         );
     }
 
@@ -429,11 +432,11 @@ suite('Data Science - Native Editor', () => {
         expect(contents.metadata!.language_info!.version).to.not.equal('10.11.12');
 
         // When a cell is executed, then ensure we store the python version info in the notebook data.
-        const version: Version = {build: [], major: 10, minor: 11, patch: 12, prerelease: [], raw: '10.11.12'};
-        when(executionProvider.getUsableJupyterPython()).thenResolve(({version} as any));
+        const version: Version = { build: [], major: 10, minor: 11, patch: 12, prerelease: [], raw: '10.11.12' };
+        when(executionProvider.getUsableJupyterPython()).thenResolve(({ version } as any));
 
         try {
-            editor.onMessage(InteractiveWindowMessages.SubmitNewCell, {code: 'hello', id: '1'});
+            editor.onMessage(InteractiveWindowMessages.SubmitNewCell, { code: 'hello', id: '1' });
         } catch {
             // Ignore errors related to running cells, assume that works.
             noop();
@@ -452,5 +455,24 @@ suite('Data Science - Native Editor', () => {
         // Verify the version info is in the notbook.
         contents = JSON.parse(editor.contents) as nbformat.INotebookContent;
         expect(contents.metadata!.language_info!.version).to.equal('10.11.12');
+    });
+
+    test('Opening file with local storage but no global will still open with old contents', async () => {
+        // This test is really for making sure when a user upgrades to a new extension, we still have their old storage
+        const file = Uri.parse('file://foo.ipynb');
+
+        // Initially nothing in memento
+        expect(storage.get(`notebook-storage-${file.toString()}`)).to.be.undefined;
+        expect(localStorage.get(`notebook-storage-${file.toString()}`)).to.be.undefined;
+
+        // Put the regular file into the local storage
+        localStorage.update(`notebook-storage-${file.toString()}`, baseFile);
+        const editor = createEditor();
+        await editor.load('', file);
+
+        // It should load with that value
+        expect(editor.contents).to.be.equal(baseFile);
+        expect(editor.cells).to.be.lengthOf(3);
+
     });
 });
