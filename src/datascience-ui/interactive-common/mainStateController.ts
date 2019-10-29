@@ -222,6 +222,10 @@ export class MainStateController implements IMessageHandler {
                 this.handleTmLanguageResponse(payload);
                 break;
 
+            case InteractiveWindowMessages.ConnectedToNotebook:
+                this.handleConnected(payload);
+                break;
+
             case InteractiveWindowMessages.RestartKernel:
                 // Go through all vms that are currently executing and mark them as finished
                 this.handleRestarted(payload);
@@ -966,6 +970,10 @@ export class MainStateController implements IMessageHandler {
         }
     }
 
+    private handleConnected(payload: string | undefined) {
+        this.setState({ kernelId: payload });
+    }
+
     private handleRestarted(payload: string | undefined) {
         this.suspendUpdates();
 
@@ -981,8 +989,7 @@ export class MainStateController implements IMessageHandler {
             });
             this.setState({ cellVMs: newVMs });
         }
-        this.setState({ currentExecutionCount: 0 });
-        this.setState({ kernelId: payload });
+        this.setState({ currentExecutionCount: 0, kernelId: payload });
         this.resumeUpdates();
 
         // Update our variables

@@ -202,7 +202,8 @@ export enum Telemetry {
     NotebookRunCount = 'DATASCIENCE.NATIVE.NOTEBOOK_RUN_COUNT',
     NotebookOpenCount = 'DATASCIENCE.NATIVE.NOTEBOOK_OPEN_COUNT',
     NotebookOpenTime = 'DS_INTERNAL.NATIVE.NOTEBOOK_OPEN_TIME',
-    SessionIdleTimeout = 'DATASCIENCE.JUPYTER_IDLE_TIMEOUT'
+    SessionIdleTimeout = 'DATASCIENCE.JUPYTER_IDLE_TIMEOUT',
+    ConnectedToNotebook = 'DATASCIENCE.JUPYTER.CONNECTED'
 }
 
 export enum NativeKeyboardCommandTelemetry {

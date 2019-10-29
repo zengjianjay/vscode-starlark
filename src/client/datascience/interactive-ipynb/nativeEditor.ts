@@ -364,6 +364,7 @@ export class NativeEditor extends InteractiveBase implements INotebookEditor {
                 });
             }
         } catch (exc) {
+            const kernelId = this.getNotebook() ? (<INotebook>this.getNotebook()).getKernelId() : undefined;
             // Make this error our cell output
             this.sendCellsToWebView([
                 {
@@ -383,12 +384,12 @@ export class NativeEditor extends InteractiveBase implements INotebookEditor {
                     file: Identifiers.EmptyFileName,
                     line: 0,
                     state: CellState.error,
-                    executeKernelId: this.getNotebook() ? (<INotebook>this.getNotebook()).getKernelId() : undefined
+                    executeKernelId: kernelId
                 }
             ]);
 
             // Tell the other side we restarted the kernel. This will stop all executions
-            this.postMessage(InteractiveWindowMessages.RestartKernel).ignoreErrors();
+            this.postMessage(InteractiveWindowMessages.RestartKernel, kernelId).ignoreErrors();
 
             // Handle an error
             await this.errorHandler.handleError(exc);

@@ -580,6 +580,8 @@ export class NativeCell extends React.Component<INativeCellProps> {
             this.props.stateController.getState().kernelId === null ||
             this.props.cellVM.cell.executeKernelId !== this.props.stateController.getState().kernelId ||
             this.props.cellVM.cell.data.cell_type !== 'code' ||
+            (this.props.cellVM.cell.state !== CellState.finished &&
+            this.props.cellVM.cell.state !== CellState.error) ||
             getSettings().enableGather === false;
         };
         const canRunAbove = this.props.stateController.canRunAbove(cellId);

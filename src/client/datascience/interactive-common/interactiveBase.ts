@@ -181,6 +181,10 @@ export abstract class InteractiveBase extends WebViewHost<IInteractiveWindowMapp
                 this.handleMessage(message, payload, this.copyCode);
                 break;
 
+            case InteractiveWindowMessages.ConnectedToNotebook:
+                this.connectedToJupyter();
+                break;
+
             case InteractiveWindowMessages.RestartKernel:
                 this.restartKernel().ignoreErrors();
                 break;
@@ -318,6 +322,13 @@ export abstract class InteractiveBase extends WebViewHost<IInteractiveWindowMapp
     @captureTelemetry(Telemetry.DeleteAllCells)
     public removeAllCells() {
         this.postMessage(InteractiveWindowMessages.DeleteAllCells).ignoreErrors();
+    }
+
+    @captureTelemetry(Telemetry.ConnectedToNotebook)
+    public connectedToJupyter() {
+        if (this.notebook) {
+            this.postMessage(InteractiveWindowMessages.ConnectedToNotebook, this.notebook.getKernelId()).ignoreErrors();
+        }
     }
 
     @captureTelemetry(Telemetry.RestartKernel)
@@ -688,7 +699,6 @@ export abstract class InteractiveBase extends WebViewHost<IInteractiveWindowMapp
 
             // For a restart, tell our window to reset
             if (reason === SysInfoReason.Restart || reason === SysInfoReason.New) {
-                this.postMessage(InteractiveWindowMessages.RestartKernel, this.notebook ? this.notebook.getKernelId() : undefined).ignoreErrors();
                 if (this.notebook) {
                     this.jupyterDebugger.onRestart(this.notebook);
                 }
@@ -925,6 +935,9 @@ export abstract class InteractiveBase extends WebViewHost<IInteractiveWindowMapp
                 traceError(exc);
             }
         } finally {
+            if (this.notebook) {
+                this.postMessage(InteractiveWindowMessages.RestartKernel, this.notebook.getKernelId()).ignoreErrors();
+            }
             status.dispose();
             this.restartingKernel = false;
         }
@@ -1087,6 +1100,10 @@ export abstract class InteractiveBase extends WebViewHost<IInteractiveWindowMapp
         // Then create a new notebook
         if (server) {
             this.notebook = await server.createNotebook(await this.getNotebookIdentity());
+        }
+
+        if (this.notebook) {
+            this.postMessage(InteractiveWindowMessages.ConnectedToNotebook, this.notebook.getKernelId()).ignoreErrors();
         }
 
         traceInfo('Connected to jupyter server.');

@@ -12,6 +12,7 @@ export namespace InteractiveWindowMessages {
     export const UpdateCell = 'update_cell';
     export const GotoCodeCell = 'gotocell_code';
     export const CopyCodeCell = 'copycell_code';
+    export const ConnectedToNotebook = 'connected_to_notebook';
     export const RestartKernel = 'restart_kernel';
     export const Export = 'export_to_ipynb';
     export const GetAllCells = 'get_all_cells';
@@ -271,6 +272,7 @@ export class IInteractiveWindowMapping {
     public [InteractiveWindowMessages.UpdateCell]: ICell;
     public [InteractiveWindowMessages.GotoCodeCell]: IGotoCode;
     public [InteractiveWindowMessages.CopyCodeCell]: ICopyCode;
+    public [InteractiveWindowMessages.ConnectedToNotebook]: string | undefined;
     public [InteractiveWindowMessages.RestartKernel]: string | undefined;
     public [InteractiveWindowMessages.Export]: ICell[];
     public [InteractiveWindowMessages.GetAllCells]: ICell;
