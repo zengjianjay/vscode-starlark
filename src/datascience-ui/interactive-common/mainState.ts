@@ -37,7 +37,7 @@ export enum CursorPos {
     Current
 }
 
-export interface IMainState {
+export type IMainState = {
     cellVMs: ICellViewModel[];
     editCellVM: ICellViewModel | undefined;
     busy: boolean;
@@ -45,7 +45,7 @@ export interface IMainState {
     undoStack: ICellViewModel[][];
     redoStack: ICellViewModel[][];
     submittedText: boolean;
-    history: InputHistory;
+    //history: InputHistory;
     rootStyle?: string;
     rootCss?: string;
     font: IFont;
@@ -67,6 +67,8 @@ export interface IMainState {
     isAtBottom: boolean;
     newCellId?: string;
     loadTotal?: number;
+    skipDefault?: boolean;
+    testMode?: boolean;
 }
 
 export interface IFont {

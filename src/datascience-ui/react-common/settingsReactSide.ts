@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-
 'use strict';
+import * as monacoEditor from 'monaco-editor/esm/vs/editor/editor.api';
 
 import { IDataScienceExtraSettings } from '../../client/datascience/types';
 
@@ -86,4 +86,39 @@ function load() {
             debugJustMyCode: true
         };
     }
+}
+
+export function computeEditorOptions(): monacoEditor.editor.IEditorOptions {
+    const intellisenseOptions = getSettings().intellisenseOptions;
+    const extraSettings = getSettings().extraSettings;
+    if (intellisenseOptions && extraSettings) {
+        return {
+            quickSuggestions: {
+                other: intellisenseOptions.quickSuggestions.other,
+                comments: intellisenseOptions.quickSuggestions.comments,
+                strings: intellisenseOptions.quickSuggestions.strings
+            },
+            acceptSuggestionOnEnter: intellisenseOptions.acceptSuggestionOnEnter,
+            quickSuggestionsDelay: intellisenseOptions.quickSuggestionsDelay,
+            suggestOnTriggerCharacters: intellisenseOptions.suggestOnTriggerCharacters,
+            tabCompletion: intellisenseOptions.tabCompletion,
+            suggest: {
+                localityBonus: intellisenseOptions.suggestLocalityBonus
+            },
+            suggestSelection: intellisenseOptions.suggestSelection,
+            wordBasedSuggestions: intellisenseOptions.wordBasedSuggestions,
+            parameterHints: {
+                enabled: intellisenseOptions.parameterHintsEnabled
+            },
+            cursorStyle: extraSettings.editor.cursor,
+            cursorBlinking: extraSettings.editor.cursorBlink,
+            autoClosingBrackets: extraSettings.editor.autoClosingBrackets as any,
+            autoClosingQuotes: extraSettings.editor.autoClosingQuotes as any,
+            autoIndent: extraSettings.editor.autoIndent as any,
+            autoSurround: extraSettings.editor.autoSurround as any,
+            fontLigatures: extraSettings.editor.fontLigatures
+        };
+    }
+
+    return {};
 }

@@ -122,7 +122,7 @@ export class MainStateController implements IMessageHandler {
         this.postOffice.addHandler(this);
 
         // Tell the interactive window code we have started.
-        this.postOffice.sendMessage<IInteractiveWindowMapping, 'started'>(InteractiveWindowMessages.Started);
+        this.postOffice.sendMessage(InteractiveWindowMessages.Started);
 
         // Get our monaco theme and css if not running a test, because these make everything async too
         if (!this.props.testMode) {
