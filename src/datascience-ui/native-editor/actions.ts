@@ -5,6 +5,7 @@ import { Action } from 'redux';
 
 import { CursorPos } from '../interactive-common/mainState';
 import { QueuableAction } from '../react-common/reduxUtils';
+import { InteractiveWindowMessages } from '../../client/datascience/interactive-common/interactiveWindowTypes';
 
 export const INSERT_ABOVE = 'insert_above';
 export const INSERT_BELOW = 'insert_below';
@@ -42,6 +43,7 @@ export interface IRefreshVariablesAction {
 }
 
 export type NativeEditorActionTypes =
+    InteractiveWindowMessages |
     typeof INSERT_ABOVE |
     typeof INSERT_BELOW |
     typeof INSERT_ABOVE_FIRST |
