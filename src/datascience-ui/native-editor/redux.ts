@@ -21,6 +21,9 @@ import {
 import { Creation } from './reducers/creation';
 import { Execution } from './reducers/execution';
 import { Focus } from './reducers/focus';
+import { TOGGLE_VARIABLE_EXPLORER, REFRESH_VARIABLES } from './actions';
+import { validateVariablesInFrame } from '../../test/debugger/utils';
+import { Variables } from './reducers/variables';
 
 export function generateDefaultState(skipDefault: boolean, baseTheme: string, postOffice: PostOffice): IMainState {
     return {
@@ -60,7 +63,9 @@ function generateRootReducer(skipDefault: boolean, baseTheme: string, postOffice
         [FOCUS_CELL]: Focus.focusCell,
         [ADD_CELL]: Creation.addNewCell,
         [EXECUTE_CELL]: Execution.executeCell,
-        [EXECUTE_ALL_CELLS]: Execution.executeAllCells
+        [EXECUTE_ALL_CELLS]: Execution.executeAllCells,
+        [TOGGLE_VARIABLE_EXPLORER]: Variables.toggleVariableExplorer,
+        [REFRESH_VARIABLES]: Variables.refreshVariables
     });
 }
 

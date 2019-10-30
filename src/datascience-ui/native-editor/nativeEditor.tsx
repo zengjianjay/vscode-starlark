@@ -139,7 +139,7 @@ class NativeEditor extends React.Component<INativeEditorProps> {
             this.sendCommand(NativeCommandType.RunAll, 'mouse');
         };
         const toggleVariableExplorer = () => {
-            this.stateController.toggleVariableExplorer();
+            this.props.toggleVariableExplorer();
             this.sendCommand(NativeCommandType.ToggleVariableExplorer, 'mouse');
         };
         const variableExplorerTooltip = this.props.variablesVisible ?
