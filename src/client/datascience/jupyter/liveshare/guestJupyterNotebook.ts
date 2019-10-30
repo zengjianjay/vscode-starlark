@@ -14,7 +14,7 @@ import { createDeferred } from '../../../common/utils/async';
 import * as localize from '../../../common/utils/localize';
 import { noop } from '../../../common/utils/misc';
 import { LiveShare, LiveShareCommands } from '../../constants';
-import { ICell, INotebook, INotebookCompletion, INotebookServer, InterruptResult } from '../../types';
+import { ICell, IGatherExecution, INotebook, INotebookCompletion, INotebookServer, InterruptResult } from '../../types';
 import { LiveShareParticipantDefault, LiveShareParticipantGuest } from './liveShareParticipantMixin';
 import { ResponseQueue } from './responseQueue';
 import { IExecuteObservableResponse, ILiveShareParticipant, IServerResponse } from './types';
@@ -59,6 +59,14 @@ export class GuestJupyterNotebook
         return 'NA';
     }
 
+    public gatherCode(_c: ICell): string | undefined {
+        return undefined;
+    }
+
+    public resetLog(): void {
+        return;
+    }
+
     public clear(_id: string): void {
         // We don't do anything as we don't cache results in this class.
         noop();
@@ -94,6 +102,10 @@ export class GuestJupyterNotebook
     public setLaunchingFile(_directory: string): Promise<void> {
         // Ignore this command on this side
         return Promise.resolve();
+    }
+
+    public setGatherHandler(_gather: IGatherExecution): void {
+        noop();
     }
 
     public async setMatplotLibStyle(_useDark: boolean): Promise<void> {

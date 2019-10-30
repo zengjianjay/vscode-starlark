@@ -41,6 +41,7 @@ import { JupyterExecutionFactory } from '../../client/datascience/jupyter/jupyte
 import {
     ICell,
     IConnection,
+    IGatherExecution,
     IJupyterKernelSpec,
     INotebook,
     INotebookCompletion,
@@ -103,6 +104,10 @@ class MockJupyterNotebook implements INotebook {
         noop();
     }
 
+    public setGatherHandler(_gather: IGatherExecution): void {
+        noop();
+    }
+
     public getSysInfo(): Promise<ICell | undefined> {
         return Promise.resolve(undefined);
     }
@@ -117,6 +122,14 @@ class MockJupyterNotebook implements INotebook {
 
     public async dispose(): Promise<void> {
         return Promise.resolve();
+    }
+
+    public gatherCode(_c: ICell): string | undefined {
+        return undefined;
+    }
+
+    public resetLog(): void {
+        return;
     }
 }
 

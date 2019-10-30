@@ -105,11 +105,15 @@ export class NativeEditorProvider implements INotebookEditorProvider, IAsyncDisp
     }
 
     @captureTelemetry(Telemetry.CreateNewNotebook, undefined, false)
-    public async createNew(): Promise<INotebookEditor> {
+    public async createNew(contents?: string): Promise<INotebookEditor> {
         // Create a new URI for the dummy file using our root workspace path
         const uri = await this.getNextNewNotebookUri();
         this.notebookCount += 1;
-        return this.open(uri, '');
+        if (contents) {
+            return this.open(uri, contents);
+        } else {
+            return this.open(uri, '');
+        }
     }
 
     public async getNotebookOptions(): Promise<INotebookServerOptions> {

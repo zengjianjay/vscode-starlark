@@ -131,7 +131,7 @@ export function registerTypes(serviceManager: IServiceManager) {
     serviceManager.add<IDataScienceErrorHandler>(IDataScienceErrorHandler, wrapType(DataScienceErrorHandler));
     serviceManager.addSingleton<ICodeLensFactory>(ICodeLensFactory, wrapType(CodeLensFactory));
     serviceManager.addSingleton<ICellHashProvider>(ICellHashProvider, wrapType(CellHashProvider));
-    serviceManager.addSingleton<IGatherExecution>(IGatherExecution, wrapType(GatherExecution));
+    serviceManager.add<IGatherExecution>(IGatherExecution, wrapType(GatherExecution));
     serviceManager.addBinding(ICellHashProvider, IInteractiveWindowListener);
     serviceManager.addBinding(ICellHashProvider, INotebookExecutionLogger);
     serviceManager.addBinding(IJupyterDebugger, ICellHashListener);

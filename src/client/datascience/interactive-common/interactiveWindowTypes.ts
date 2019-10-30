@@ -4,7 +4,7 @@
 import * as monacoEditor from 'monaco-editor/esm/vs/editor/editor.api';
 
 import { CssMessages, IGetCssRequest, IGetCssResponse, SharedMessages } from '../messages';
-import { ICell, IInteractiveWindowInfo, IJupyterVariable, IJupyterVariablesResponse } from '../types';
+import { ICell, IInteractiveWindowInfo, IJupyterVariable, IJupyterVariablesResponse, INotebook } from '../types';
 
 export namespace InteractiveWindowMessages {
     export const StartCell = 'start_cell';
@@ -64,7 +64,7 @@ export namespace InteractiveWindowMessages {
     export const ShowPlot = 'show_plot';
     export const StartDebugging = 'start_debugging';
     export const StopDebugging = 'stop_debugging';
-    export const GatherCode = 'gather_code';
+    export const GatherCodeRequest = 'gather_code';
     export const LoadAllCells = 'load_all_cells';
     export const LoadAllCellsComplete = 'load_all_cells_complete';
     export const ScrollToCell = 'scroll_to_cell';
@@ -272,7 +272,7 @@ export class IInteractiveWindowMapping {
     public [InteractiveWindowMessages.UpdateCell]: ICell;
     public [InteractiveWindowMessages.GotoCodeCell]: IGotoCode;
     public [InteractiveWindowMessages.CopyCodeCell]: ICopyCode;
-    public [InteractiveWindowMessages.ConnectedToNotebook]: string | undefined;
+    public [InteractiveWindowMessages.ConnectedToNotebook]: INotebook | undefined;
     public [InteractiveWindowMessages.RestartKernel]: string | undefined;
     public [InteractiveWindowMessages.Export]: ICell[];
     public [InteractiveWindowMessages.GetAllCells]: ICell;
@@ -324,7 +324,7 @@ export class IInteractiveWindowMapping {
     public [InteractiveWindowMessages.ShowPlot]: string | undefined;
     public [InteractiveWindowMessages.StartDebugging]: never | undefined;
     public [InteractiveWindowMessages.StopDebugging]: never | undefined;
-    public [InteractiveWindowMessages.GatherCode]: ICell;
+    public [InteractiveWindowMessages.GatherCodeRequest]: ICell;
     public [InteractiveWindowMessages.LoadAllCells]: ILoadAllCells;
     public [InteractiveWindowMessages.LoadAllCellsComplete]: ILoadAllCells;
     public [InteractiveWindowMessages.ScrollToCell]: IScrollToCell;

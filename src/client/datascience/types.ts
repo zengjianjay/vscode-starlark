@@ -99,6 +99,9 @@ export interface INotebook extends IAsyncDisposable {
     getKernelId(): string | undefined;
     getSysInfo(): Promise<ICell | undefined>;
     setMatplotLibStyle(useDark: boolean): Promise<void>;
+    setGatherHandler(gather: IGatherExecution): void;
+    gatherCode(cell: ICell): string | undefined;
+    resetLog(): void;
 }
 
 export interface INotebookServerOptions {
@@ -244,7 +247,7 @@ export interface INotebookEditorProvider {
     readonly editors: INotebookEditor[];
     open(file: Uri, contents: string): Promise<INotebookEditor>;
     show(file: Uri): Promise<INotebookEditor | undefined>;
-    createNew(): Promise<INotebookEditor>;
+    createNew(contents?: string): Promise<INotebookEditor>;
     getNotebookOptions(): Promise<INotebookServerOptions>;
     getNextNewNotebookUri(): Promise<Uri>;
 }

@@ -327,7 +327,7 @@ export abstract class InteractiveBase extends WebViewHost<IInteractiveWindowMapp
     @captureTelemetry(Telemetry.ConnectedToNotebook)
     public connectedToJupyter() {
         if (this.notebook) {
-            this.postMessage(InteractiveWindowMessages.ConnectedToNotebook, this.notebook.getKernelId()).ignoreErrors();
+            this.postMessage(InteractiveWindowMessages.ConnectedToNotebook, this.notebook).ignoreErrors();
         }
     }
 
@@ -1102,7 +1102,7 @@ export abstract class InteractiveBase extends WebViewHost<IInteractiveWindowMapp
         }
 
         if (this.notebook) {
-            this.postMessage(InteractiveWindowMessages.ConnectedToNotebook, this.notebook.getKernelId()).ignoreErrors();
+            this.postMessage(InteractiveWindowMessages.ConnectedToNotebook, this.notebook).ignoreErrors();
         }
 
         traceInfo('Connected to jupyter server.');

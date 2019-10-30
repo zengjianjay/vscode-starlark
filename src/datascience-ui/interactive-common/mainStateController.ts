@@ -435,7 +435,7 @@ export class MainStateController implements IMessageHandler {
 
     public gatherCell = (cellVM: ICellViewModel | undefined) => {
         if (cellVM) {
-            this.sendMessage(InteractiveWindowMessages.GatherCode, cellVM.cell);
+            this.sendMessage(InteractiveWindowMessages.GatherCodeRequest, cellVM.cell);
         }
     }
 

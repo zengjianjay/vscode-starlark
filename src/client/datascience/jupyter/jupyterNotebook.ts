@@ -28,6 +28,7 @@ import { CodeSnippits, Identifiers, Telemetry } from '../constants';
 import {
     CellState,
     ICell,
+    IGatherExecution,
     IJupyterSession,
     INotebook,
     INotebookCompletion,
@@ -138,6 +139,7 @@ export class JupyterNotebookBase implements INotebook {
     private sessionStartTime: number;
     private pendingCellSubscriptions: CellSubscriber[] = [];
     private ranInitialSetup = false;
+    private gather: IGatherExecution | undefined;
     private _resource: Uri;
     private _disposed: boolean = false;
     private _workingDirectory: string | undefined;
@@ -253,6 +255,22 @@ export class JupyterNotebookBase implements INotebook {
     public setLaunchingFile(file: string): Promise<void> {
         // Update our working directory if we don't have one set already
         return this.updateWorkingDirectory(file);
+    }
+
+    public setGatherHandler(g: IGatherExecution) {
+        this.gather = g;
+    }
+
+    public gatherCode(c: ICell): string | undefined {
+        if (this.gather) {
+            return this.gather.gatherCode(c);
+        }
+    }
+
+    public resetLog() {
+        if (this.gather) {
+            this.gather.resetLog();
+        }
     }
 
     public executeObservable(code: string, file: string, line: number, id: string, silent: boolean = false): Observable<ICell[]> {
