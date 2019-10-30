@@ -56,7 +56,7 @@ const queueableDispatcher: Middleware = store => next => action => {
     flush();
 
     return res;
-}
+};
 
 export function createAsyncStore<S, A extends Action>(reducers: Reducer<S, A>) {
     return createStore(

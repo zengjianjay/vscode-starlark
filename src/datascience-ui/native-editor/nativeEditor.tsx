@@ -7,7 +7,7 @@ import * as React from 'react';
 
 import { noop } from '../../client/common/utils/misc';
 import { OSType } from '../../client/common/utils/platform';
-import { NativeCommandType, IInteractiveWindowMapping } from '../../client/datascience/interactive-common/interactiveWindowTypes';
+import { NativeCommandType, IInteractiveWindowMapping, InteractiveWindowMessages } from '../../client/datascience/interactive-common/interactiveWindowTypes';
 import { ContentPanel, IContentPanelProps } from '../interactive-common/contentPanel';
 import { CursorPos, ICellViewModel, IMainState } from '../interactive-common/mainState';
 import { IVariablePanelProps, VariablePanel } from '../interactive-common/variablePanel';
@@ -22,15 +22,14 @@ import { AddCellLine } from './addCellLine';
 import { NativeCell } from './nativeCell';
 import { actionCreators } from './actions';
 import { connect } from 'react-redux';
+import { concatMultilineStringInput } from '../../client/datascience/common';
 
 // See the discussion here: https://github.com/Microsoft/tslint-microsoft-contrib/issues/676
 // tslint:disable: react-this-binding-issue
 // tslint:disable-next-line:no-require-imports no-var-requires
 const debounce = require('lodash/debounce') as typeof import('lodash/debounce');
 
-type INativeEditorProps = IMainState & typeof actionCreators & {
-    sendMessage<M extends IInteractiveWindowMapping, T extends keyof M>(type: T, payload?: M[T]): void;
-};
+type INativeEditorProps = IMainState & typeof actionCreators;
 
 function mapStateToProps(state: IMainState): IMainState {
     return state;
@@ -119,23 +118,29 @@ class NativeEditor extends React.Component<INativeEditorProps> {
         setTimeout(() => this.moveSelectionToExisting(id, focusCode, cursorPos), 1);
     }
 
+    private sendMessage = <M extends IInteractiveWindowMapping, T extends keyof M>(type: T, payload?: M[T]) => {
+        this.props.sendMessage<M, T>(type, payload);
+    }
+
+    private sendCommand(command: NativeCommandType, source: 'keyboard' | 'mouse') {
+        this.sendMessage(InteractiveWindowMessages.NativeCommand, { command, source });
+    }
+
     // tslint:disable: react-this-binding-issue
     private renderToolbarPanel() {
         const addCell = () => {
-            const newCell = this.stateController.addNewCell();
-            this.stateController.sendCommand(NativeCommandType.AddToEnd, 'mouse');
-            if (newCell) {
-                // Has to be async because the click will change the focus on mouse up
-                setTimeout(() => this.focusCell(newCell.cell.id, true, CursorPos.Top), 0);
-            }
+            this.props.addCell();
+            this.sendCommand(NativeCommandType.AddToEnd, 'mouse');
         };
         const runAll = () => {
-            this.stateController.runAll();
-            this.stateController.sendCommand(NativeCommandType.RunAll, 'mouse');
+            // Run all cells currently available.
+            const codes = this.props.cellVMs.map(c => concatMultilineStringInput(c.cell.data.source));
+            this.props.executeAllCells(codes);
+            this.sendCommand(NativeCommandType.RunAll, 'mouse');
         };
         const toggleVariableExplorer = () => {
             this.stateController.toggleVariableExplorer();
-            this.stateController.sendCommand(NativeCommandType.ToggleVariableExplorer, 'mouse');
+            this.sendCommand(NativeCommandType.ToggleVariableExplorer, 'mouse');
         };
         const variableExplorerTooltip = this.props.variablesVisible ?
             getLocString('DataScience.collapseVariableExplorerTooltip', 'Hide variables active in jupyter kernel') :
@@ -176,7 +181,7 @@ class NativeEditor extends React.Component<INativeEditorProps> {
 
     private saveFromToolbar = () => {
         this.stateController.save();
-        this.stateController.sendCommand(NativeCommandType.Save, 'mouse');
+        this.sendCommand(NativeCommandType.Save, 'mouse');
     }
 
     private renderVariablePanel(baseTheme: string) {
@@ -277,7 +282,7 @@ class NativeEditor extends React.Component<INativeEditorProps> {
                 if (event.ctrlKey || (event.metaKey && getOSType() === OSType.OSX)) {
                     // This is save, save our cells
                     this.stateController.save();
-                    this.stateController.sendCommand(NativeCommandType.Save, 'keyboard');
+                    this.sendCommand(NativeCommandType.Save, 'keyboard');
                 }
                 break;
             }
@@ -324,12 +329,8 @@ class NativeEditor extends React.Component<INativeEditorProps> {
         this.cellRefs.set(cellVM.cell.id, cellRef);
         this.cellContainerRefs.set(cellVM.cell.id, containerRef);
         const addNewCell = () => {
-            const newCell = this.stateController.insertBelow(cellVM.cell.id, true);
-            this.stateController.sendCommand(NativeCommandType.AddToEnd, 'mouse');
-            if (newCell) {
-                // Has to be async because the click will change the focus on mouse up
-                setTimeout(() => this.focusCell(newCell, true, CursorPos.Top), 0);
-            }
+            this.props.insertBelow(cellVM.cell.id);
+            this.sendCommand(NativeCommandType.AddToEnd, 'mouse');
         };
         const lastLine = index === this.props.cellVMs.length - 1 ?
             <AddCellLine
@@ -350,7 +351,6 @@ class NativeEditor extends React.Component<INativeEditorProps> {
                     <NativeCell
                         ref={cellRef}
                         role='listitem'
-                        stateController={this.stateController}
                         maxTextSize={getSettings().maxOutputSize}
                         autoFocus={false}
                         testMode={this.props.testMode}

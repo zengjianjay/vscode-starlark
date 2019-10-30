@@ -7,11 +7,22 @@ import { IMainState } from '../interactive-common/mainState';
 import { PostOffice } from '../react-common/postOffice';
 import { combineReducers, createAsyncStore } from '../react-common/reduxUtils';
 import { computeEditorOptions, getSettings } from '../react-common/settingsReactSide';
-import { FOCUS_CELL, INSERT_ABOVE, INSERT_ABOVE_FIRST, NativeEditorActions, NativeEditorActionTypes } from './actions';
+import {
+    ADD_CELL,
+    EXECUTE_ALL_CELLS,
+    EXECUTE_CELL,
+    FOCUS_CELL,
+    INSERT_ABOVE,
+    INSERT_ABOVE_FIRST,
+    INSERT_BELOW,
+    NativeEditorActions,
+    NativeEditorActionTypes
+} from './actions';
 import { Creation } from './reducers/creation';
+import { Execution } from './reducers/execution';
 import { Focus } from './reducers/focus';
 
-export function generateDefaultState(skipDefault: boolean, baseTheme: string): IMainState {
+export function generateDefaultState(skipDefault: boolean, baseTheme: string, postOffice: PostOffice): IMainState {
     return {
         // tslint:disable-next-line: no-typeof-undefined
         skipDefault,
@@ -35,24 +46,35 @@ export function generateDefaultState(skipDefault: boolean, baseTheme: string): I
         font: {
             size: 14,
             family: 'Consolas, \'Courier New\', monospace'
-        }
+        },
+        sendMessage: postOffice.sendMessage.bind(postOffice)
     };
 }
 
-function generateRootReducer(skipDefault: boolean, baseTheme: string): Reducer<IMainState, NativeEditorActions> {
-    const defaultState = generateDefaultState(skipDefault, baseTheme);
+function generateRootReducer(skipDefault: boolean, baseTheme: string, postOffice: PostOffice): Reducer<IMainState, NativeEditorActions> {
+    const defaultState = generateDefaultState(skipDefault, baseTheme, postOffice);
     return combineReducers<IMainState, NativeEditorActions, NativeEditorActionTypes>(defaultState, {
+        [INSERT_BELOW]: Creation.insertBelow,
         [INSERT_ABOVE_FIRST]: Creation.insertAboveFirst,
         [INSERT_ABOVE]: Creation.insertAbove,
-        [FOCUS_CELL]: Focus.focusCell
+        [FOCUS_CELL]: Focus.focusCell,
+        [ADD_CELL]: Creation.addNewCell,
+        [EXECUTE_CELL]: Execution.executeCell,
+        [EXECUTE_ALL_CELLS]: Execution.executeAllCells
     });
 }
 
-export function createStore(skipDefault: boolean, baseTheme: string, postOffice: PostOffice) {
-    const store = createAsyncStore<IMainState, NativeEditorActions>(generateRootReducer(skipDefault, baseTheme));
+export function createStore(skipDefault: boolean, baseTheme: string) {
+    // Create a post office to listen to store dispatches and allow reducers to
+    // send messages
+    const postOffice = new PostOffice();
+
+    // Send this into the root reducer
+    const store = createAsyncStore<IMainState, NativeEditorActions>(generateRootReducer(skipDefault, baseTheme, postOffice));
 
     // Make all messages from the post office dispatch to the store.
     postOffice.addHandler({
+        // tslint:disable-next-line: no-any
         handleMessage(message: string, payload: any): boolean {
             store.dispatch({ type: message, ...payload });
             return true;

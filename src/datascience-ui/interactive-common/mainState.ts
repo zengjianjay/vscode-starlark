@@ -14,6 +14,7 @@ import { Identifiers } from '../../client/datascience/constants';
 import { CellState, ICell, IJupyterVariable, IMessageCell } from '../../client/datascience/types';
 import { noop } from '../../test/core';
 import { InputHistory } from './inputHistory';
+import { PostOffice } from '../react-common/postOffice';
 
 export interface ICellViewModel {
     cell: ICell;
@@ -68,7 +69,8 @@ export type IMainState = {
     loadTotal?: number;
     skipDefault?: boolean;
     testMode?: boolean;
-}
+    sendMessage<M, T extends keyof M>(type: T, payload?: M[T]): void;
+};
 
 export interface IFont {
     size: number;

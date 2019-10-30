@@ -7,7 +7,7 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 
-import { IVsCodeApi, PostOffice } from '../react-common/postOffice';
+import { IVsCodeApi } from '../react-common/postOffice';
 import { detectBaseTheme } from '../react-common/themeDetector';
 import { createStore } from './redux';
 import { getConnectedNativeEditor } from './nativeEditor';
@@ -16,15 +16,11 @@ import { getConnectedNativeEditor } from './nativeEditor';
 export declare function acquireVsCodeApi(): IVsCodeApi;
 const baseTheme = detectBaseTheme();
 
-// Create the post office to talk to VS code
-const postOffice = new PostOffice();
-
 // Create the redux store
 const store = createStore(
     // tslint:disable-next-line: no-typeof-undefined
     typeof acquireVsCodeApi !== 'undefined',
-    baseTheme,
-    postOffice);
+    baseTheme);
 
 // Wire up a connected react control for our NativeEditor
 const ConnectedNativeEditor = getConnectedNativeEditor();
@@ -33,7 +29,7 @@ const ConnectedNativeEditor = getConnectedNativeEditor();
 // tslint:disable:no-typeof-undefined
 ReactDOM.render(
     <Provider store={store}>
-        <ConnectedNativeEditor sendMessage={postOffice.sendMessage}/>
+        <ConnectedNativeEditor/>
     </Provider>,
   document.getElementById('root') as HTMLElement
 );

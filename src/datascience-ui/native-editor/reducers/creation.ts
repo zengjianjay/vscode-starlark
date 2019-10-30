@@ -36,8 +36,33 @@ export namespace Creation {
 
         // Find the position where we want to insert
         const position = prevState.cellVMs.findIndex(c => c.cell.id === action.cellId);
-        if (position < 0) {
+        if (position >= 0) {
             newList.splice(position, 0, newVM);
+        } else {
+            newList.push(newVM);
+        }
+
+        const result = {
+            ...prevState,
+            cellVMs: newList
+        };
+
+        // Queue up an action to set focus to the cell we're inserting
+        setTimeout(() => {
+            action.queueAction(actionCreators.focusCell(newVM.cell.id));
+        });
+
+        return result;
+    }
+
+    export function insertBelow(prevState: IMainState, action: NativeEditorActions): IMainState {
+        const newVM = prepareCellVM(createEmptyCell(uuid(), null));
+        const newList = [...prevState.cellVMs];
+
+        // Find the position where we want to insert
+        const position = prevState.cellVMs.findIndex(c => c.cell.id === action.cellId);
+        if (position >= 0) {
+            newList.splice(position + 1, 0, newVM);
         } else {
             newList.push(newVM);
         }
@@ -61,6 +86,11 @@ export namespace Creation {
 
         // Do what an insertAbove does
         return insertAbove(prevState, { ...action, cellId: firstCellId });
+    }
+
+    export function addNewCell(prevState: IMainState, action: NativeEditorActions): IMainState {
+        // Do the same thing that an insertBelow does using the currently selected cell.
+        return insertBelow(prevState, { ...action, cellId: prevState.selectedCellId });
     }
 
 }
