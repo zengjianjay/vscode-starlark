@@ -1,16 +1,15 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 'use strict';
-import { connect } from 'react-redux';
-import { Action, Reducer } from 'redux';
+import { Reducer } from 'redux';
 
 import { IMainState } from '../interactive-common/mainState';
+import { PostOffice } from '../react-common/postOffice';
 import { combineReducers, createAsyncStore } from '../react-common/reduxUtils';
 import { computeEditorOptions, getSettings } from '../react-common/settingsReactSide';
-import { actionCreators, NativeEditorActions, NativeEditorActionTypes, INSERT_ABOVE_FIRST, INSERT_ABOVE } from './actions';
-import { NativeEditor } from './nativeEditor';
-import { Movement } from './reducers/movement';
-import { Cells } from './reducers/cells';
+import { FOCUS_CELL, INSERT_ABOVE, INSERT_ABOVE_FIRST, NativeEditorActions, NativeEditorActionTypes } from './actions';
+import { Creation } from './reducers/creation';
+import { Focus } from './reducers/focus';
 
 export function generateDefaultState(skipDefault: boolean, baseTheme: string): IMainState {
     return {
@@ -40,26 +39,25 @@ export function generateDefaultState(skipDefault: boolean, baseTheme: string): I
     };
 }
 
-function generateRootReducer(skipDefault: boolean, baseTheme: string): Reducer<IMainState> {
+function generateRootReducer(skipDefault: boolean, baseTheme: string): Reducer<IMainState, NativeEditorActions> {
     const defaultState = generateDefaultState(skipDefault, baseTheme);
     return combineReducers<IMainState, NativeEditorActions, NativeEditorActionTypes>(defaultState, {
-        [INSERT_ABOVE_FIRST]: Movement.insertAboveFirst,
-        [INSERT_ABOVE]: Cells.insertAbove
-    }
-    );
+        [INSERT_ABOVE_FIRST]: Creation.insertAboveFirst,
+        [INSERT_ABOVE]: Creation.insertAbove,
+        [FOCUS_CELL]: Focus.focusCell
+    });
 }
 
-function mapStateToProps(state: IMainState): IMainState {
-    return state;
-}
+export function createStore(skipDefault: boolean, baseTheme: string, postOffice: PostOffice) {
+    const store = createAsyncStore<IMainState, NativeEditorActions>(generateRootReducer(skipDefault, baseTheme));
 
-export function generateConnected() {
-    return connect(
-        mapStateToProps,
-        actionCreators
-    )(NativeEditor);
-}
+    // Make all messages from the post office dispatch to the store.
+    postOffice.addHandler({
+        handleMessage(message: string, payload: any): boolean {
+            store.dispatch({ type: message, ...payload });
+            return true;
+        }
+    });
 
-export function createStore(skipDefault: boolean, baseTheme: string) {
-    return createAsyncStore<IMainState, Action>(generateRootReducer(skipDefault, baseTheme));
+    return store;
 }

@@ -11,14 +11,7 @@ type DefinedReducer<S = any, A extends Action = AnyAction> = (
 ) => S;
 
 // Borrowed some of these from redux-starter-kit
-declare type Actions<T extends keyof any = string> = Record<T, Action>;
-
-declare type CaseReducer<S = any, A extends Action = AnyAction> = (state: S, action: A) => S | void;
-
-declare type CaseReducers<S, AS extends Actions> = {
-    [T in keyof AS]: AS[T] extends Action ? CaseReducer<S, AS[T]> : void;
-};
-export function combineReducers<S, A extends Action<K>, K extends string>(defaultState: S, map: CaseReducers<S, Actions<K>>): Reducer<S, A> {
+export function combineReducers<S, A extends Action<K>, K extends string>(defaultState: S, map: Record<K, DefinedReducer<S, A>>): Reducer<S, A> {
     return (currentState: S = defaultState, action: A) => {
         const func = map[action.type] as DefinedReducer<S, A>;
         if (typeof func === 'function') {

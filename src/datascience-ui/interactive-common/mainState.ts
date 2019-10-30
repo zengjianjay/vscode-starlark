@@ -28,7 +28,6 @@ export interface ICellViewModel {
     useQuickEdit?: boolean;
     selected: boolean;
     focused: boolean;
-    inputBlockToggled(id: string): void;
 }
 
 export enum CursorPos {
@@ -184,7 +183,7 @@ export function extractInputText(inputCell: ICell, settings: IDataScienceSetting
     return concatMultilineStringInput(source);
 }
 
-export function createCellVM(inputCell: ICell, settings: IDataScienceSettings | undefined, inputBlockToggled: (id: string) => void, editable: boolean): ICellViewModel {
+export function createCellVM(inputCell: ICell, settings: IDataScienceSettings | undefined, editable: boolean): ICellViewModel {
     let inputLinesCount = 0;
     const inputText = inputCell.data.cell_type === 'code' ? extractInputText(inputCell, settings) : '';
     if (inputText) {
@@ -198,7 +197,6 @@ export function createCellVM(inputCell: ICell, settings: IDataScienceSettings | 
         inputBlockShow: true,
         inputBlockText: inputText,
         inputBlockCollapseNeeded: (inputLinesCount > 1),
-        inputBlockToggled: inputBlockToggled,
         selected: false,
         focused: false
     };

@@ -7,7 +7,7 @@ import * as React from 'react';
 
 import { noop } from '../../client/common/utils/misc';
 import { OSType } from '../../client/common/utils/platform';
-import { NativeCommandType } from '../../client/datascience/interactive-common/interactiveWindowTypes';
+import { NativeCommandType, IInteractiveWindowMapping } from '../../client/datascience/interactive-common/interactiveWindowTypes';
 import { ContentPanel, IContentPanelProps } from '../interactive-common/contentPanel';
 import { CursorPos, ICellViewModel, IMainState } from '../interactive-common/mainState';
 import { IVariablePanelProps, VariablePanel } from '../interactive-common/variablePanel';
@@ -21,15 +21,21 @@ import { getSettings } from '../react-common/settingsReactSide';
 import { AddCellLine } from './addCellLine';
 import { NativeCell } from './nativeCell';
 import { actionCreators } from './actions';
+import { connect } from 'react-redux';
 
 // See the discussion here: https://github.com/Microsoft/tslint-microsoft-contrib/issues/676
 // tslint:disable: react-this-binding-issue
 // tslint:disable-next-line:no-require-imports no-var-requires
 const debounce = require('lodash/debounce') as typeof import('lodash/debounce');
 
-type INativeEditorProps = IMainState & typeof actionCreators;
+type INativeEditorProps = IMainState & typeof actionCreators & {
+    sendMessage<M extends IInteractiveWindowMapping, T extends keyof M>(type: T, payload?: M[T]): void;
+};
 
-export class NativeEditor extends React.Component<INativeEditorProps> {
+function mapStateToProps(state: IMainState): IMainState {
+    return state;
+}
+class NativeEditor extends React.Component<INativeEditorProps> {
     private renderCount: number = 0;
     private mainPanelRef: React.RefObject<HTMLDivElement> = React.createRef<HTMLDivElement>();
     private contentPanelScrollRef: React.RefObject<HTMLElement> = React.createRef<HTMLElement>();
@@ -66,14 +72,6 @@ export class NativeEditor extends React.Component<INativeEditorProps> {
 
         // Update the state controller with our new state
         const progressBar = this.props.busy && !this.props.testMode ? <Progress /> : undefined;
-        const insertAboveFirst = () => {
-            const cellId = this.props.cellVMs.length > 0 ? this.props.cellVMs[0].cell.id : undefined;
-            const newCell = this.props.insertAbove(cellId, true);
-            if (newCell) {
-                // Make async because the click changes focus.
-                setTimeout(() => this.focusCell(newCell, true, CursorPos.Top), 0);
-            }
-        };
         const addCellLine = this.props.cellVMs.length === 0 ? null :
             <AddCellLine includePlus={true} className='add-cell-line-top' click={this.props.insertAboveFirst} baseTheme={this.props.baseTheme}/>;
 
@@ -97,24 +95,6 @@ export class NativeEditor extends React.Component<INativeEditorProps> {
                 </main>
             </div>
         );
-    }
-
-    private activated = () => {
-        // Make sure the input cell gets focus
-        if (getSettings && getSettings().allowInput) {
-            // Delay this so that we make sure the outer frame has focus first.
-            setTimeout(() => {
-                // First we have to give ourselves focus (so that focus actually ends up in the code cell)
-                if (this.mainPanelRef && this.mainPanelRef.current) {
-                    this.mainPanelRef.current.focus({preventScroll: true});
-                }
-            }, 100);
-        }
-    }
-
-    private scrollToCell(_id: string) {
-        // Not used in the native editor
-        noop();
     }
 
     private moveSelectionToExisting = (cellId: string, focusCode: boolean, cursorPos: CursorPos) => {
@@ -406,4 +386,12 @@ export class NativeEditor extends React.Component<INativeEditorProps> {
             }, 0);
         }
     }
+}
+
+// Main export, return a redux connected editor
+export function getConnectedNativeEditor() {
+    return connect(
+        mapStateToProps,
+        actionCreators
+    )(NativeEditor);
 }
