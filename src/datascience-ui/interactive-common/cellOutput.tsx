@@ -351,10 +351,8 @@ export class CellOutput extends React.Component<ICellOutputProps> {
 
     private renderOutput = (outputs: nbformat.IOutput[]): JSX.Element => {
         const buffer: JSX.Element[] = [];
-        const transformedList: ICellOutput[] = [];
-        outputs.forEach(output => {
-            transformedList.push(this.transformOutput(output));
-        });
+        let transformedList: ICellOutput[] = [];
+        transformedList = outputs.map(this.transformOutput);
 
         transformedList.forEach(transformed => {
             let mimetype = transformed.mimeType;
@@ -385,16 +383,16 @@ export class CellOutput extends React.Component<ICellOutputProps> {
                         </div>
                     );
                 }
-            }
-
-            if (transformed.data) {
-                const keys = Object.keys(transformed.data);
-                mimetype = keys.length > 0 ? keys[0] : 'unknown';
             } else {
-                mimetype = 'unknown';
+                if (transformed.data) {
+                    const keys = Object.keys(transformed.data);
+                    mimetype = keys.length > 0 ? keys[0] : 'unknown';
+                } else {
+                    mimetype = 'unknown';
+                }
+                const str: string = this.getUnknownMimeTypeFormatString().format(mimetype);
+                buffer.push(<div>{str}</div>);
             }
-            const str: string = this.getUnknownMimeTypeFormatString().format(mimetype);
-            buffer.push(<div>{str}</div>);
         });
 
         // Create a default set of properties
