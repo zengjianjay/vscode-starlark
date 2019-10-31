@@ -60,7 +60,6 @@ import {
     IJupyterDebugger,
     IJupyterExecution,
     IJupyterVariables,
-    INotebook,
     INotebookEditor,
     INotebookEditorProvider,
     INotebookExporter,
@@ -265,10 +264,6 @@ export class NativeEditor extends InteractiveBase implements INotebookEditor {
                 this.handleMessage(message, payload, this.loadCellsComplete);
                 break;
 
-            case InteractiveWindowMessages.RestartKernel:
-                this.handleMessage(message, payload, this.onRestartKernel);
-                break;
-
             default:
                 break;
         }
@@ -375,7 +370,6 @@ export class NativeEditor extends InteractiveBase implements INotebookEditor {
                 });
             }
         } catch (exc) {
-            const kernelId = this.getNotebook() ? (<INotebook>this.getNotebook()).getKernelId() : undefined;
             // Make this error our cell output
             this.sendCellsToWebView([
                 {
@@ -399,7 +393,7 @@ export class NativeEditor extends InteractiveBase implements INotebookEditor {
             ]);
 
             // Tell the other side we restarted the kernel. This will stop all executions
-            this.postMessage(InteractiveWindowMessages.RestartKernel, kernelId).ignoreErrors();
+            this.postMessage(InteractiveWindowMessages.RestartKernel).ignoreErrors();
 
             // Handle an error
             await this.errorHandler.handleError(exc);
@@ -926,9 +920,5 @@ export class NativeEditor extends InteractiveBase implements INotebookEditor {
             this.loadedAllCells = true;
             sendTelemetryEvent(Telemetry.NotebookOpenTime, this.startupTimer.elapsedTime);
         }
-    }
-
-    private onRestartKernel() {
-        this.sendCellsToWebView(this.cells);
     }
 }

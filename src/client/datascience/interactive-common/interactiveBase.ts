@@ -934,9 +934,6 @@ export abstract class InteractiveBase extends WebViewHost<IInteractiveWindowMapp
                 traceError(exc);
             }
         } finally {
-            if (this.notebook) {
-                this.postMessage(InteractiveWindowMessages.RestartKernel, this.notebook.getKernelId()).ignoreErrors();
-            }
             status.dispose();
             this.restartingKernel = false;
         }

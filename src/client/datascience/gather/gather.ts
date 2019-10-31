@@ -78,7 +78,7 @@ export class GatherExecution implements IGatherExecution, INotebookExecutionLogg
      */
     public gatherCode(vscCell: IVscCell): string {
         const gatherCell = convertVscToGatherCell(vscCell);
-        if (gatherCell === undefined) {
+        if (!gatherCell) {
             return '';
         }
 

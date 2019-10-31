@@ -18,16 +18,6 @@ import { IDataScienceErrorHandler, INotebookEditor, INotebookEditorProvider, INo
 @injectable()
 export class NativeEditorProvider implements INotebookEditorProvider, IAsyncDisposable {
 
-    public get activeEditor(): INotebookEditor | undefined {
-        const active = [...this.activeEditors.entries()].find(e => e[1].active);
-        if (active) {
-            return active[1];
-        }
-    }
-
-    public get editors(): INotebookEditor[] {
-        return [...this.activeEditors.values()];
-    }
     private activeEditors: Map<string, INotebookEditor> = new Map<string, INotebookEditor>();
     private executedEditors: Set<string> = new Set<string>();
     private notebookCount: number = 0;
@@ -82,6 +72,17 @@ export class NativeEditorProvider implements INotebookEditorProvider, IAsyncDisp
         sendTelemetryEvent(Telemetry.NotebookOpenCount, this.openedNotebookCount);
         sendTelemetryEvent(Telemetry.NotebookRunCount, this.executedEditors.size);
         sendTelemetryEvent(Telemetry.NotebookWorkspaceCount, this.notebookCount);
+    }
+
+    public get activeEditor(): INotebookEditor | undefined {
+        const active = [...this.activeEditors.entries()].find(e => e[1].active);
+        if (active) {
+            return active[1];
+        }
+    }
+
+    public get editors(): INotebookEditor[] {
+        return [...this.activeEditors.values()];
     }
 
     public async open(file: Uri, contents: string): Promise<INotebookEditor> {
