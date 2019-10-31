@@ -73,7 +73,6 @@ export class NativeEditorProvider implements INotebookEditorProvider, IAsyncDisp
         sendTelemetryEvent(Telemetry.NotebookRunCount, this.executedEditors.size);
         sendTelemetryEvent(Telemetry.NotebookWorkspaceCount, this.notebookCount);
     }
-
     public get activeEditor(): INotebookEditor | undefined {
         const active = [...this.activeEditors.entries()].find(e => e[1].active);
         if (active) {
