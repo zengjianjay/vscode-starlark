@@ -247,7 +247,6 @@ export interface INotebookEditorProvider {
     show(file: Uri): Promise<INotebookEditor | undefined>;
     createNew(contents?: string): Promise<INotebookEditor>;
     getNotebookOptions(): Promise<INotebookServerOptions>;
-    getNextNewNotebookUri(): Promise<Uri>;
 }
 
 // For native editing, the INotebookEditor acts like a TextEditor and a TextDocument together

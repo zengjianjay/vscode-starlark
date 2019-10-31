@@ -89,7 +89,7 @@ export class JupyterExporter implements INotebookExporter {
                 id: uuid(),
                 file: Identifiers.EmptyFileName,
                 line: 0,
-                state: CellState.finished,
+                state: CellState.finished
             };
 
             return [cell, ...cells];

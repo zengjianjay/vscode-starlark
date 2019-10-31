@@ -95,8 +95,4 @@ export class TestNativeEditorProvider implements INotebookEditorProvider {
     public async getNotebookOptions(): Promise<INotebookServerOptions> {
         return this.realProvider.getNotebookOptions();
     }
-
-    public async getNextNewNotebookUri(): Promise<Uri> {
-        return Uri.file('');
-    }
 }

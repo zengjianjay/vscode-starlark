@@ -135,31 +135,6 @@ export class NativeEditorProvider implements INotebookEditorProvider, IAsyncDisp
         };
     }
 
-    public async getNextNewNotebookUri(): Promise<Uri> {
-        // Start in the root and look for files starting with untitled
-        let number = 1;
-        const dir = this.workspace.rootPath;
-        if (dir) {
-            const existing = await this.fileSystem.search(path.join(dir, `${localize.DataScience.untitledNotebookFileName()}-*.ipynb`));
-
-            // Sort by number
-            existing.sort();
-
-            // Add one onto the end of the last one
-            if (existing.length > 0) {
-                const match = /(\w+)-(\d+)\.ipynb/.exec(path.basename(existing[existing.length - 1]));
-                if (match && match.length > 1) {
-                    number = parseInt(match[2], 10);
-                }
-                return Uri.file(path.join(dir, `${localize.DataScience.untitledNotebookFileName()}-${number + 1}`));
-            }
-        }
-
-        const result = Uri.file(`${localize.DataScience.untitledNotebookFileName()}-${this.nextNumber}`);
-        this.nextNumber += 1;
-        return result;
-    }
-
     /**
      * Open ipynb files when user opens an ipynb file.
      *
@@ -203,6 +178,31 @@ export class NativeEditorProvider implements INotebookEditorProvider, IAsyncDisp
             this.activeEditors.delete(oldPath);
         }
         this.activeEditors.set(e.file.fsPath, e);
+    }
+
+    private async getNextNewNotebookUri(): Promise<Uri> {
+        // Start in the root and look for files starting with untitled
+        let number = 1;
+        const dir = this.workspace.rootPath;
+        if (dir) {
+            const existing = await this.fileSystem.search(path.join(dir, `${localize.DataScience.untitledNotebookFileName()}-*.ipynb`));
+
+            // Sort by number
+            existing.sort();
+
+            // Add one onto the end of the last one
+            if (existing.length > 0) {
+                const match = /(\w+)-(\d+)\.ipynb/.exec(path.basename(existing[existing.length - 1]));
+                if (match && match.length > 1) {
+                    number = parseInt(match[2], 10);
+                }
+                return Uri.file(path.join(dir, `${localize.DataScience.untitledNotebookFileName()}-${number + 1}`));
+            }
+        }
+
+        const result = Uri.file(`${localize.DataScience.untitledNotebookFileName()}-${this.nextNumber}`);
+        this.nextNumber += 1;
+        return result;
     }
 
     private openNotebookAndCloseEditor = async (document: TextDocument, closeDocumentBeforeOpeningNotebook: boolean) => {
