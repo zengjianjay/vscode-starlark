@@ -273,7 +273,7 @@ export class IInteractiveWindowMapping {
     public [InteractiveWindowMessages.GotoCodeCell]: IGotoCode;
     public [InteractiveWindowMessages.CopyCodeCell]: ICopyCode;
     public [InteractiveWindowMessages.ConnectedToNotebook]: INotebook | undefined;
-    public [InteractiveWindowMessages.RestartKernel]: string | undefined;
+    public [InteractiveWindowMessages.RestartKernel]: never | undefined;
     public [InteractiveWindowMessages.Export]: ICell[];
     public [InteractiveWindowMessages.GetAllCells]: ICell;
     public [InteractiveWindowMessages.ReturnAllCells]: ICell[];

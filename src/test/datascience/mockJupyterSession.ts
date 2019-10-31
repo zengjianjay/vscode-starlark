@@ -102,10 +102,6 @@ export class MockJupyterSession implements IJupyterSession {
         };
     }
 
-    public id(): string | undefined {
-        return 'fake_kernel_id';
-    }
-
     public dispose(): Promise<void> {
         return sleep(10);
     }

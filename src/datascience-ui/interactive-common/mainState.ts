@@ -68,7 +68,6 @@ export interface IMainState {
     isAtBottom: boolean;
     newCellId?: string;
     loadTotal?: number;
-    kernelId?: string;
 }
 
 export interface IFont {
@@ -143,7 +142,7 @@ export function createEmptyCell(id: string | undefined, executionCount: number |
         id: id ? id : Identifiers.EditCellId,
         file: Identifiers.EmptyFileName,
         line: 0,
-        state: CellState.finished,
+        state: CellState.finished
     };
 }
 

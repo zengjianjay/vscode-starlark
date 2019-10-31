@@ -698,6 +698,7 @@ export abstract class InteractiveBase extends WebViewHost<IInteractiveWindowMapp
 
             // For a restart, tell our window to reset
             if (reason === SysInfoReason.Restart || reason === SysInfoReason.New) {
+                this.postMessage(InteractiveWindowMessages.RestartKernel).ignoreErrors();
                 if (this.notebook) {
                     this.jupyterDebugger.onRestart(this.notebook);
                 }
