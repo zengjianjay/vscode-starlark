@@ -20,7 +20,7 @@ import { Progress } from '../react-common/progress';
 import { getSettings } from '../react-common/settingsReactSide';
 import { AddCellLine } from './addCellLine';
 import { NativeCell } from './nativeCell';
-import { actionCreators } from './actions';
+import { actionCreators } from './redux/actions';
 import { connect } from 'react-redux';
 import { concatMultilineStringInput } from '../../client/datascience/common';
 

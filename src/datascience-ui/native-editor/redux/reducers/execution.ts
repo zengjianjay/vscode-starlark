@@ -1,12 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 'use strict';
-import { CellMatcher } from '../../../client/datascience/cellMatcher';
-import { concatMultilineStringInput } from '../../../client/datascience/common';
-import { InteractiveWindowMessages } from '../../../client/datascience/interactive-common/interactiveWindowTypes';
-import { CellState } from '../../../client/datascience/types';
-import { IMainState } from '../../interactive-common/mainState';
-import { getSettings } from '../../react-common/settingsReactSide';
+import { CellMatcher } from '../../../../client/datascience/cellMatcher';
+import { concatMultilineStringInput } from '../../../../client/datascience/common';
+import { InteractiveWindowMessages } from '../../../../client/datascience/interactive-common/interactiveWindowTypes';
+import { CellState } from '../../../../client/datascience/types';
+import { IMainState } from '../../../interactive-common/mainState';
+import { getSettings } from '../../../react-common/settingsReactSide';
 import { NativeEditorActions } from '../actions';
 import { Helpers } from './helpers';
 

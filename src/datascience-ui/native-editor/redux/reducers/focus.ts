@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 'use strict';
 
-import { IMainState } from '../../interactive-common/mainState';
+import { IMainState } from '../../../interactive-common/mainState';
 import { NativeEditorActions } from '../actions';
 
 export namespace Focus {
