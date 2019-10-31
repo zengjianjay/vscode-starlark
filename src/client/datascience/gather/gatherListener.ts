@@ -25,9 +25,9 @@ export class GatherListener implements IInteractiveWindowListener {
     public onMessage(message: string, payload?: any): void {
         switch (message) {
             case InteractiveWindowMessages.ConnectedToNotebook:
-                if (payload) {
-                    const nb = payload as INotebook;
-                    void nb.setGatherHandler(this.gatherExecution);
+                const nb = payload as INotebook;
+                if (nb) {
+                    void nb.addGatherSupport(this.gatherExecution);
                 }
                 break;
 

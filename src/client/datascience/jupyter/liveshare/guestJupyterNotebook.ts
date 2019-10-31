@@ -63,7 +63,7 @@ export class GuestJupyterNotebook
         return undefined;
     }
 
-    public resetLog(): void {
+    public resetGatherLog(): void {
         return;
     }
 
@@ -104,7 +104,7 @@ export class GuestJupyterNotebook
         return Promise.resolve();
     }
 
-    public setGatherHandler(_gather: IGatherExecution): void {
+    public addGatherSupport(_gather: IGatherExecution): void {
         noop();
     }
 

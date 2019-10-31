@@ -138,7 +138,6 @@ export function registerTypes(serviceManager: IServiceManager) {
     serviceManager.addSingleton<INotebookEditorProvider>(INotebookEditorProvider, wrapType(NativeEditorProvider));
     serviceManager.add<INotebookEditor>(INotebookEditor, wrapType(NativeEditor));
     serviceManager.addSingleton<IDataScienceCommandListener>(IDataScienceCommandListener, wrapType(NativeEditorCommandListener));
-    serviceManager.addBinding(IGatherExecution, INotebookExecutionLogger);
     serviceManager.addBinding(ICodeLensFactory, IInteractiveWindowListener);
     serviceManager.addSingleton<IDebugLocationTracker>(IDebugLocationTracker, wrapType(DebugLocationTrackerFactory));
 }

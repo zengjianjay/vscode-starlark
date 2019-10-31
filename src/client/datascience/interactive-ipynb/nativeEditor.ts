@@ -222,16 +222,6 @@ export class NativeEditor extends InteractiveBase implements INotebookEditor {
         switch (message) {
             case InteractiveWindowMessages.GatherCodeRequest:
                 this.handleMessage(message, payload, this.gatherCode);
-                if (payload) {
-                    const cell = payload as ICell;
-                    const nb = this.getNotebook();
-                    if (nb) {
-                        const pgm = nb.gatherCode(cell);
-                        if (pgm) {
-                            pgm.endsWith('');
-                        }
-                    }
-                }
                 break;
             case InteractiveWindowMessages.ReExecuteCell:
                 this.executedEvent.fire(this);

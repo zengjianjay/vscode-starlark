@@ -25,6 +25,7 @@ import { generateCells } from '../cellFactory';
 import { CellMatcher } from '../cellMatcher';
 import { concatMultilineStringInput, concatMultilineStringOutput, formatStreamText } from '../common';
 import { CodeSnippits, Identifiers, Telemetry } from '../constants';
+import { GatherExecution } from '../gather/gather';
 import {
     CellState,
     ICell,
@@ -257,7 +258,8 @@ export class JupyterNotebookBase implements INotebook {
         return this.updateWorkingDirectory(file);
     }
 
-    public setGatherHandler(g: IGatherExecution) {
+    public addGatherSupport(g: GatherExecution) {
+        this.loggers.push(g);
         this.gather = g;
     }
 
@@ -267,7 +269,7 @@ export class JupyterNotebookBase implements INotebook {
         }
     }
 
-    public resetLog() {
+    public resetGatherLog() {
         if (this.gather) {
             this.gather.resetLog();
         }

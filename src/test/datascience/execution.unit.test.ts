@@ -104,7 +104,7 @@ class MockJupyterNotebook implements INotebook {
         noop();
     }
 
-    public setGatherHandler(_gather: IGatherExecution): void {
+    public addGatherSupport(_gather: IGatherExecution): void {
         noop();
     }
 
@@ -128,7 +128,7 @@ class MockJupyterNotebook implements INotebook {
         return undefined;
     }
 
-    public resetLog(): void {
+    public resetGatherLog(): void {
         return;
     }
 }

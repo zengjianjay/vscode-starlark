@@ -326,8 +326,8 @@ export abstract class InteractiveBase extends WebViewHost<IInteractiveWindowMapp
 
     @captureTelemetry(Telemetry.ConnectedToNotebook)
     public connectedToJupyter() {
-        if (this.notebook) {
-            this.postMessage(InteractiveWindowMessages.ConnectedToNotebook, this.notebook).ignoreErrors();
+        if (this.getNotebook) {
+            this.postMessage(InteractiveWindowMessages.ConnectedToNotebook, this.getNotebook()).ignoreErrors();
         }
     }
 
