@@ -6,6 +6,7 @@ import { Action } from 'redux';
 import { CursorPos, IMainState } from '../../interactive-common/mainState';
 import { QueuableAction } from '../../react-common/reduxUtils';
 import { InteractiveWindowMessages, IInteractiveWindowMapping } from '../../../client/datascience/interactive-common/interactiveWindowTypes';
+import { ICell } from '../../../client/datascience/types';
 
 export enum NativeEditorActionTypes {
     INSERT_ABOVE = 'insert_above',
@@ -52,12 +53,14 @@ export class INativeEditorActionMapping {
     public [NativeEditorActionTypes.INSERT_ABOVE_FIRST]: ActionFunc<never | undefined>;
     public [NativeEditorActionTypes.FOCUS_CELL]: ActionFunc<ICellAction>;
     public [NativeEditorActionTypes.ADD_NEW_CELL]: ActionFunc<never | undefined>;
-    public [NativeEditorActionTypes.EXECUTE_CELL]: ActionFunc<ICellAction>;
-    public [NativeEditorActionTypes.EXECUTE_ALL_CELLS]: ActionFunc<never | undefined>;
+    public [NativeEditorActionTypes.EXECUTE_CELL]: ActionFunc<IExecuteAction>;
+    public [NativeEditorActionTypes.EXECUTE_ALL_CELLS]: ActionFunc<IExecuteAllAction>;
     public [NativeEditorActionTypes.TOGGLE_VARIABLE_EXPLORER]: ActionFunc<never | undefined>;
     public [NativeEditorActionTypes.REFRESH_VARIABLES]: ActionFunc<IRefreshVariablesAction>;
+    public [InteractiveWindowMessages.StartCell]: ActionFunc<ICell>;
+    public [InteractiveWindowMessages.FinishCell]: ActionFunc<ICell>;
+    public [InteractiveWindowMessages.UpdateCell]: ActionFunc<ICell>;
 }
-
 
 // See https://react-redux.js.org/using-react-redux/connect-mapdispatch#defining-mapdispatchtoprops-as-an-object
 export const actionCreators = {

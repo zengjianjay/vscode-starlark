@@ -4,10 +4,10 @@
 import { CellMatcher } from '../../../../client/datascience/cellMatcher';
 import { concatMultilineStringInput } from '../../../../client/datascience/common';
 import { InteractiveWindowMessages } from '../../../../client/datascience/interactive-common/interactiveWindowTypes';
-import { CellState } from '../../../../client/datascience/types';
+import { CellState, ICell } from '../../../../client/datascience/types';
 import { IMainState } from '../../../interactive-common/mainState';
 import { getSettings } from '../../../react-common/settingsReactSide';
-import { NativeEditorActions } from '../actions';
+import { IExecuteAction, IExecuteAllAction } from '../actions';
 import { Helpers } from './helpers';
 
 export namespace Execution {
@@ -36,24 +36,24 @@ export namespace Execution {
         return prevState;
     }
 
-    export function executeCell(prevState: IMainState, action: NativeEditorActions): IMainState {
-        const index = prevState.cellVMs.findIndex(c => c.cell.id === action.cellId);
+    export function executeCell(prevState: IMainState, payload: IExecuteAction): IMainState {
+        const index = prevState.cellVMs.findIndex(c => c.cell.id === payload.cellId);
 
         // Generate a new state based on the cell type.
-        const newState = modifyStateForCellExecute(prevState, index, action.code);
+        const newState = modifyStateForCellExecute(prevState, index, payload.code);
 
         // Post a message to the other side to reexecute
-        if (action.cellId && action.code) {
-            Helpers.postMessage(newState, InteractiveWindowMessages.ReExecuteCell, { code: action.code, id: action.cellId });
+        if (payload.cellId && payload.code) {
+            Helpers.postMessage(newState, InteractiveWindowMessages.ReExecuteCell, { code: payload.code, id: payload.cellId });
         }
 
         return prevState;
     }
 
-    export function executeAllCells(prevState: IMainState, action: NativeEditorActions): IMainState {
+    export function executeAllCells(prevState: IMainState, payload: IExecuteAllAction): IMainState {
         // Go through all cells and reexecute them. We only want a single state update though.
-        if (action.codes && action.codes.length) {
-            const result = action.codes.reduce<IMainState>((p, c, i) => modifyStateForCellExecute(p, i, c), prevState);
+        if (payload.codes && payload.codes.length) {
+            const result = payload.codes.reduce<IMainState>((p, c, i) => modifyStateForCellExecute(p, i, c), prevState);
 
             // However we want to send a message for each
             result.cellVMs.filter(c => c.cell.data.cell_type === 'code').forEach(
@@ -67,5 +67,4 @@ export namespace Execution {
 
         return prevState;
     }
-
 }

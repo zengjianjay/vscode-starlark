@@ -10,7 +10,7 @@ import { computeEditorOptions, getSettings } from '../../react-common/settingsRe
 import { INativeEditorActionMapping } from './actions';
 import { reducerMap } from './reducers';
 
-export function generateDefaultState(skipDefault: boolean, baseTheme: string, postOffice: PostOffice): IMainState {
+function generateDefaultState(skipDefault: boolean, baseTheme: string, postOffice: PostOffice): IMainState {
     return {
         // tslint:disable-next-line: no-typeof-undefined
         skipDefault,

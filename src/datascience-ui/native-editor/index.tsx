@@ -9,8 +9,8 @@ import { Provider } from 'react-redux';
 
 import { IVsCodeApi } from '../react-common/postOffice';
 import { detectBaseTheme } from '../react-common/themeDetector';
-import { createStore } from './redux/redux';
 import { getConnectedNativeEditor } from './nativeEditor';
+import { createStore } from './redux/store';
 
 // This special function talks to vscode from a web panel
 export declare function acquireVsCodeApi(): IVsCodeApi;

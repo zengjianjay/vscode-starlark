@@ -7,9 +7,12 @@ import { Creation } from './creation';
 import { Execution } from './execution';
 import { Focus } from './focus';
 import { Variables } from './variables';
+import { Helpers } from './helpers';
+import { InteractiveWindowMessages } from '../../../../client/datascience/interactive-common/interactiveWindowTypes';
 
 // The list of reducers. 1 per message/action.
 export const reducerMap: INativeEditorActionMapping = {
+    // State updates
     [NativeEditorActionTypes.INSERT_ABOVE]: Creation.insertAbove,
     [NativeEditorActionTypes.INSERT_ABOVE_FIRST]: Creation.insertAboveFirst,
     [NativeEditorActionTypes.INSERT_BELOW]: Creation.insertBelow,
@@ -18,12 +21,12 @@ export const reducerMap: INativeEditorActionMapping = {
     [NativeEditorActionTypes.EXECUTE_CELL]: Execution.executeCell,
     [NativeEditorActionTypes.EXECUTE_ALL_CELLS]: Execution.executeAllCells,
     [NativeEditorActionTypes.TOGGLE_VARIABLE_EXPLORER]: Variables.toggleVariableExplorer,
-    [NativeEditorActionTypes.REFRESH_VARIABLES]: Variables.refreshVariables
+    [NativeEditorActionTypes.REFRESH_VARIABLES]: Variables.refreshVariables,
 
-    // // Messages from the webview (some are ignored)
-    // [InteractiveWindowMessages.StartCell]: Helpers.defaultReducer,
-    // [InteractiveWindowMessages.FinishCell]: Helpers.defaultReducer,
-    // [InteractiveWindowMessages.UpdateCell]: Helpers.defaultReducer,
+    // Messages from the webview (some are ignored)
+    [InteractiveWindowMessages.StartCell]: Creation.startCell,
+    [InteractiveWindowMessages.FinishCell]: Creation.finishCell,
+    [InteractiveWindowMessages.UpdateCell]: Creation.updateCell,
     // [InteractiveWindowMessages.GotoCodeCell]: Helpers.defaultReducer,
     // [InteractiveWindowMessages.CopyCodeCell]: Helpers.defaultReducer,
     // [InteractiveWindowMessages.RestartKernel]: Helpers.defaultReducer,
