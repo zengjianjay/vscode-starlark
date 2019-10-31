@@ -1433,6 +1433,9 @@ export interface IEventNamePropertyMapping {
     [Telemetry.SelfCertsMessageEnabled]: never | undefined;
     [Telemetry.SelectJupyterURI]: never | undefined;
     [Telemetry.SessionIdleTimeout]: never | undefined;
+    [Telemetry.JupyterNotInstalledErrorShown]: never | undefined;
+    [Telemetry.UserInstalledJupyter]: never | undefined;
+    [Telemetry.UserDidNotInstallJupyter]: never | undefined;
     [Telemetry.SetJupyterURIToLocal]: never | undefined;
     [Telemetry.SetJupyterURIToUserSpecified]: never | undefined;
     [Telemetry.ShiftEnterBannerShown]: never | undefined;

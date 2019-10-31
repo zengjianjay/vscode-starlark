@@ -32,6 +32,7 @@ export class NativeEditorProvider implements INotebookEditorProvider, IAsyncDisp
     private executedEditors: Set<string> = new Set<string>();
     private notebookCount: number = 0;
     private openedNotebookCount: number = 0;
+    private nextNumber: number = 1;
     constructor(
         @inject(IServiceContainer) private serviceContainer: IServiceContainer,
         @inject(IAsyncDisposableRegistry) asyncRegistry: IAsyncDisposableRegistry,
@@ -139,7 +140,7 @@ export class NativeEditorProvider implements INotebookEditorProvider, IAsyncDisp
         let number = 1;
         const dir = this.workspace.rootPath;
         if (dir) {
-            const existing = await this.fileSystem.search(`${dir}/${localize.DataScience.untitledNotebookFileName()}-*.ipynb`);
+            const existing = await this.fileSystem.search(path.join(dir, `${localize.DataScience.untitledNotebookFileName()}-*.ipynb`));
 
             // Sort by number
             existing.sort();
@@ -150,12 +151,15 @@ export class NativeEditorProvider implements INotebookEditorProvider, IAsyncDisp
                 if (match && match.length > 1) {
                     number = parseInt(match[2], 10);
                 }
+                return Uri.file(path.join(dir, `${localize.DataScience.untitledNotebookFileName()}-${number + 1}`));
             }
-            return Uri.file(path.join(dir, `${localize.DataScience.untitledNotebookFileName()}-${number}`));
         }
 
-        return Uri.file(`${localize.DataScience.untitledNotebookFileName()}-${number}`);
+        const result = Uri.file(`${localize.DataScience.untitledNotebookFileName()}-${this.nextNumber}`);
+        this.nextNumber += 1;
+        return result;
     }
+
     /**
      * Open ipynb files when user opens an ipynb file.
      *
@@ -189,7 +193,16 @@ export class NativeEditorProvider implements INotebookEditorProvider, IAsyncDisp
 
     private onOpenedEditor(e: INotebookEditor) {
         this.activeEditors.set(e.file.fsPath, e);
+        this.disposables.push(e.saved(this.onSavedEditor.bind(this, e.file.fsPath)));
         this.openedNotebookCount += 1;
+    }
+
+    private onSavedEditor(oldPath: string, e: INotebookEditor) {
+        // Switch our key for this editor
+        if (this.activeEditors.has(oldPath)) {
+            this.activeEditors.delete(oldPath);
+        }
+        this.activeEditors.set(e.file.fsPath, e);
     }
 
     private openNotebookAndCloseEditor = async (document: TextDocument, closeDocumentBeforeOpeningNotebook: boolean) => {

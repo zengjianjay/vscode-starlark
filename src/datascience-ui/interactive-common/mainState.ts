@@ -32,6 +32,12 @@ export interface ICellViewModel {
     inputBlockToggled(id: string): void;
 }
 
+export enum CursorPos {
+    Top,
+    Bottom,
+    Current
+}
+
 export interface IMainState {
     cellVMs: ICellViewModel[];
     editCellVM: ICellViewModel | undefined;
@@ -88,7 +94,7 @@ export function generateTestState(inputBlockToggled: (id: string) => void, fileP
     return {
         cellVMs: generateVMs(inputBlockToggled, filePath, editable),
         editCellVM: createEditableCellVM(1),
-        busy: true,
+        busy: false,
         skipNextScroll: false,
         undoStack: [],
         redoStack: [],

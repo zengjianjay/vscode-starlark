@@ -8,7 +8,7 @@ import * as detectIndent from 'detect-indent';
 import { inject, injectable, multiInject, named } from 'inversify';
 import * as path from 'path';
 import * as uuid from 'uuid/v4';
-import { Event, EventEmitter, Memento, Uri, ViewColumn } from 'vscode';
+import { Event, EventEmitter, Memento, TextEditor, Uri, ViewColumn } from 'vscode';
 
 import {
     IApplicationShell,
@@ -21,7 +21,7 @@ import {
 import { ContextKey } from '../../common/contextKey';
 import { traceError } from '../../common/logger';
 import { IFileSystem, TemporaryFile } from '../../common/platform/types';
-import { GLOBAL_MEMENTO, IConfigurationService, IDisposableRegistry, IMemento } from '../../common/types';
+import { GLOBAL_MEMENTO, IConfigurationService, IDisposableRegistry, IMemento, WORKSPACE_MEMENTO } from '../../common/types';
 import { createDeferred, Deferred } from '../../common/utils/async';
 import * as localize from '../../common/utils/localize';
 import { StopWatch } from '../../common/utils/stopWatch';
@@ -114,7 +114,8 @@ export class NativeEditor extends InteractiveBase implements INotebookEditor {
         @inject(IJupyterDebugger) jupyterDebugger: IJupyterDebugger,
         @inject(INotebookImporter) private importer: INotebookImporter,
         @inject(IDataScienceErrorHandler) errorHandler: IDataScienceErrorHandler,
-        @inject(IMemento) @named(GLOBAL_MEMENTO) private globalStorage: Memento
+        @inject(IMemento) @named(GLOBAL_MEMENTO) private globalStorage: Memento,
+        @inject(IMemento) @named(WORKSPACE_MEMENTO) private localStorage: Memento
     ) {
         super(
             listeners,
@@ -319,6 +320,12 @@ export class NativeEditor extends InteractiveBase implements INotebookEditor {
         }
     }
 
+    protected submitCode(code: string, file: string, line: number, id?: string, editor?: TextEditor, debug?: boolean): Promise<boolean> {
+        // When code is executed, update the version number in the metadata.
+        this.updateVersionInfoInNotebook().ignoreErrors();
+        return super.submitCode(code, file, line, id, editor, debug);
+    }
+
     @captureTelemetry(Telemetry.SubmitCellThroughInput, undefined, false)
     // tslint:disable-next-line:no-any
     protected submitNewCell(info: ISubmitNewCell) {
@@ -465,6 +472,20 @@ export class NativeEditor extends InteractiveBase implements INotebookEditor {
         // Actually don't close, just let the error bubble out
     }
 
+    /**
+     * Update the Python Version number in the notebook data.
+     *
+     * @private
+     * @memberof NativeEditor
+     */
+    private async updateVersionInfoInNotebook(): Promise<void> {
+        // Use the active interpreter
+        const usableInterpreter = await this.jupyterExecution.getUsableJupyterPython();
+        if (usableInterpreter && usableInterpreter.version && this.notebookJson.metadata && this.notebookJson.metadata.language_info) {
+            this.notebookJson.metadata.language_info.version = `${usableInterpreter.version.major}.${usableInterpreter.version.minor}.${usableInterpreter.version.patch}`;
+        }
+    }
+
     private async loadContents(contents: string | undefined, forceDirty: boolean): Promise<void> {
         // tslint:disable-next-line: no-any
         const json = contents ? JSON.parse(contents) as any : undefined;
@@ -570,7 +591,8 @@ export class NativeEditor extends InteractiveBase implements INotebookEditor {
      * @memberof NativeEditor
      */
     private async getStoredContents(): Promise<string | undefined> {
-        const data = this.globalStorage.get<{ contents?: string; lastModifiedTimeMs?: number }>(this.getStorageKey());
+        const key = this.getStorageKey();
+        const data = this.globalStorage.get<{ contents?: string; lastModifiedTimeMs?: number }>(key);
         // Check whether the file has been modified since the last time the contents were saved.
         if (data && data.lastModifiedTimeMs && !this.isUntitled && this.file.scheme === 'file') {
             const stat = await this.fileSystem.stat(this.file.fsPath);
@@ -578,7 +600,21 @@ export class NativeEditor extends InteractiveBase implements INotebookEditor {
                 return;
             }
         }
-        return data ? data.contents : undefined;
+        if (data && !this.isUntitled && data.contents) {
+            return data.contents;
+        }
+
+        const workspaceData = this.localStorage.get<string>(key);
+        if (workspaceData && !this.isUntitled) {
+            // Make sure to clear so we don't use this again.
+            this.localStorage.update(key, undefined);
+
+            // Transfer this to global storage so we use that next time instead
+            const stat = await this.fileSystem.stat(this.file.fsPath);
+            this.globalStorage.update(key, { contents: workspaceData, lastModifiedTimeMs: stat ? stat.mtime : undefined });
+
+            return workspaceData;
+        }
     }
 
     /**
@@ -595,7 +631,7 @@ export class NativeEditor extends InteractiveBase implements INotebookEditor {
         const key = this.getStorageKey();
         // Keep track of the time when this data was saved.
         // This way when we retrieve the data we can compare it against last modified date of the file.
-        await this.globalStorage.update(key, { contents, lastModifiedTimeMs: Date.now() });
+        await this.globalStorage.update(key, contents ? { contents, lastModifiedTimeMs: Date.now() } : undefined);
     }
 
     private async close(): Promise<void> {
@@ -780,7 +816,7 @@ export class NativeEditor extends InteractiveBase implements INotebookEditor {
 
     @captureTelemetry(Telemetry.ConvertToPythonFile, undefined, false)
     private async export(cells: ICell[]): Promise<void> {
-        const status = this.setStatus(localize.DataScience.convertingToPythonFile());
+        const status = this.setStatus(localize.DataScience.convertingToPythonFile(), false);
         // First generate a temporary notebook with these cells.
         let tempFile: TemporaryFile | undefined;
         try {
@@ -790,7 +826,7 @@ export class NativeEditor extends InteractiveBase implements INotebookEditor {
             await this.fileSystem.writeFile(tempFile.filePath, this.generateNotebookContent(cells), { encoding: 'utf-8' });
 
             // Import this file and show it
-            const contents = await this.importer.importFromFile(tempFile.filePath);
+            const contents = await this.importer.importFromFile(tempFile.filePath, this.file.fsPath);
             if (contents) {
                 await this.viewDocument(contents);
             }
