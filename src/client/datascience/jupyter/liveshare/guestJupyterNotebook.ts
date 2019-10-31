@@ -55,10 +55,6 @@ export class GuestJupyterNotebook
         return Promise.resolve();
     }
 
-    public getKernelId(): string | undefined {
-        return 'NA';
-    }
-
     public gatherCode(_c: ICell): string | undefined {
         return undefined;
     }

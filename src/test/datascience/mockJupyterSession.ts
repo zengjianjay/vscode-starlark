@@ -28,10 +28,6 @@ export class MockJupyterSession implements IJupyterSession {
         this.timedelay = timedelay;
     }
 
-    public getKernelId(): string | undefined {
-        return 'fake_session_kernel_id';
-    }
-
     public get onRestarted(): Event<void> {
         return this.restartedEvent.event;
     }

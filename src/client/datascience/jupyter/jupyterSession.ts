@@ -47,12 +47,6 @@ export class JupyterSession implements IJupyterSession {
         return this.shutdown();
     }
 
-    public getKernelId(): string | undefined {
-        if (this.session !== undefined) {
-            return this.session.id;
-        }
-    }
-
     public async shutdown(): Promise<void> {
         // Destroy the notebook file if not local. Local is cleaned up when we destroy the kernel spec.
         if (this.notebookFiles.length && this.contentsManager && this.connInfo && !this.connInfo.localLaunch) {

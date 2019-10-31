@@ -293,10 +293,6 @@ export class JupyterNotebookBase implements INotebook {
         });
     }
 
-    public getKernelId(): string | undefined {
-        return this.session.getKernelId();
-    }
-
     public async getSysInfo(): Promise<ICell> {
         // tslint:disable-next-line:no-multiline-string
         const versionCells = await this.executeSilently(`import sys\r\nsys.version`);

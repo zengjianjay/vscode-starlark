@@ -112,10 +112,6 @@ class MockJupyterNotebook implements INotebook {
         return Promise.resolve(undefined);
     }
 
-    public getKernelId(): string | undefined {
-        return 'fake_kernel_id';
-    }
-
     public interruptKernel(_timeout: number): Promise<InterruptResult> {
         throw new Error('Method not implemented');
     }
