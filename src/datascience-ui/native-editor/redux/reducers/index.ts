@@ -9,7 +9,7 @@ import { Focus } from './focus';
 import { Variables } from './variables';
 
 // The list of reducers. 1 per message/action.
-export const reducers: INativeEditorActionMapping = {
+export const reducerMap: INativeEditorActionMapping = {
     [NativeEditorActionTypes.INSERT_ABOVE]: Creation.insertAbove,
     [NativeEditorActionTypes.INSERT_ABOVE_FIRST]: Creation.insertAboveFirst,
     [NativeEditorActionTypes.INSERT_BELOW]: Creation.insertBelow,

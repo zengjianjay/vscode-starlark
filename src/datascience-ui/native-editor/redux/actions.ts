@@ -8,7 +8,6 @@ import { QueuableAction } from '../../react-common/reduxUtils';
 import { InteractiveWindowMessages, IInteractiveWindowMapping } from '../../../client/datascience/interactive-common/interactiveWindowTypes';
 
 export enum NativeEditorActionTypes {
-
     INSERT_ABOVE = 'insert_above',
     INSERT_BELOW = 'insert_below',
     INSERT_ABOVE_FIRST = 'insert_above_first',

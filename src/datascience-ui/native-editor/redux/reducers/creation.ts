@@ -80,7 +80,7 @@ export namespace Creation {
         return result;
     }
 
-    export function insertAboveFirst(prevState: IMainState, _a: undefined, queueAnother: QueueAnotherFunc): IMainState {
+    export function insertAboveFirst(prevState: IMainState, queueAnother: QueueAnotherFunc): IMainState {
         // Get the first cell id
         const firstCellId = prevState.cellVMs.length > 0 ? prevState.cellVMs[0].cell.id : undefined;
 
@@ -88,7 +88,7 @@ export namespace Creation {
         return insertAbove(prevState, { cellId: firstCellId }, queueAnother);
     }
 
-    export function addNewCell(prevState: IMainState, _a: undefined, queueAnother: QueueAnotherFunc): IMainState {
+    export function addNewCell(prevState: IMainState, queueAnother: QueueAnotherFunc): IMainState {
         // Do the same thing that an insertBelow does using the currently selected cell.
         return insertBelow(prevState, { cellId: prevState.selectedCellId }, queueAnother);
     }

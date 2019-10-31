@@ -1,9 +1,17 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 'use strict';
-import { Action, applyMiddleware, createStore, Middleware, Reducer } from 'redux';
+import { Action, AnyAction, applyMiddleware, createStore, Middleware, Reducer } from 'redux';
 import { logger } from 'redux-logger';
 
+// tslint:disable-next-line: interface-name
+interface TypedAnyAction<T> extends Action<T> {
+    // Allows any extra properties to be defined in an action.
+    // tslint:disable-next-line: no-any
+    [extraProps: string]: any;
+}
+
+export type QueuableAction<M> = TypedAnyAction<keyof M> & { queueAction(nextAction: TypedAnyAction<keyof M>): void };
 
 // combineReducers should take in something that is both an action and an action type to func key map
 export function combineReducers<S, M>(defaultState: S, map: M): Reducer<S, QueuableAction<M>> {
@@ -11,15 +19,18 @@ export function combineReducers<S, M>(defaultState: S, map: M): Reducer<S, Queua
         const func = map[action.type];
         if (typeof func === 'function') {
             // Call the function with assumed arguments. Not sure how to get it to
-            // pick up the type from the map at compile time.
-            return func(currentState, action, action.queueAction);
+            // pick up the type from the map at compile time. However we know that
+            // if there are only two arguments, don't pass the action.
+            if (func.length === 2) {
+                return func(currentState, action.queueAction);
+            } else {
+                return func(currentState, action, action.queueAction);
+            }
         } else {
             return currentState;
         }
     };
 }
-
-export type QueuableAction<T> = Action<keyof T> & { queueAction(nextAction: Action<keyof T>): void };
 
 // Got this idea from here:
 // https://stackoverflow.com/questions/36730793/can-i-dispatch-an-action-in-reducer
@@ -32,7 +43,7 @@ const queueableDispatcher: Middleware = store => next => action => {
         pendingActions = [];
     }
 
-    function queueAction(nextAction: Action) {
+    function queueAction(nextAction: AnyAction) {
         pendingActions.push(nextAction);
 
         // If already done, run the pending actions (this means
