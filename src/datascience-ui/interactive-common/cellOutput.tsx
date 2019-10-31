@@ -351,8 +351,7 @@ export class CellOutput extends React.Component<ICellOutputProps> {
 
     private renderOutput = (outputs: nbformat.IOutput[]): JSX.Element => {
         const buffer: JSX.Element[] = [];
-        let transformedList: ICellOutput[] = [];
-        transformedList = outputs.map(this.transformOutput);
+        const transformedList = outputs.map(this.transformOutput);
 
         transformedList.forEach(transformed => {
             let mimetype = transformed.mimeType;
