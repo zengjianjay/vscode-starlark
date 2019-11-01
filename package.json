@@ -1694,8 +1694,8 @@
                 },
                 "python.dataScience.enableGather": {
                     "type": "boolean",
-                    "default": false,
-                    "description": "Enable code gather. For a gathered cell, it and all the code cells it depends on can be exported to a script or a notebook.",
+                    "default": true,
+                    "description": "Enable code gather. For a gathered cell, it and all the code cells it depends on will be exported to a new notebook.",
                     "scope": "resource"
                 },
                 "python.dataScience.codeLenses": {
