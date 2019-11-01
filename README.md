@@ -1,33 +1,14 @@
 # Python extension for Visual Studio Code
 
-A [Visual Studio Code](https://code.visualstudio.com/) [extension](https://marketplace.visualstudio.com/VSCode) with rich support for the [Python language](https://www.python.org/) (for all [actively supported versions](https://devguide.python.org/#status-of-python-branches) of the language: 2.7, >=3.5), including features such as IntelliSense, linting, debugging, code navigation, code formatting, Jupyter notebook support, refactoring, variable explorer, test explorer, snippets, and more!
+A [Visual Studio Code](https://code.visualstudio.com/) [extension](https://marketplace.visualstudio.com/VSCode) with rich support for the [Starlark language](https://www.python.org/) (for all [actively supported versions](https://devguide.python.org/#status-of-python-branches) of the language: 2.7, >=3.5), including features such as IntelliSense, linting, debugging, code navigation, code formatting, Jupyter notebook support, refactoring, variable explorer, test explorer, snippets, and more!
+
+Because Starlark is effectively a subset of Python, I modified the excellent vscode-python extension to work with Starlark files. The support is not specific to bazel files, but adds Linting and IntelliSense for all .star files.
+
+WIP
 
 ## Quick start
 
-* **Step 1.** [Install a supported version of Python on your system](https://code.visualstudio.com/docs/python/python-tutorial#_prerequisites) (note: that the system install of Python on macOS is not supported).
-* **Step 2.** Install the Python extension for Visual Studio Code.
-* **Step 3.** Open or create a Python file and start coding!
-
-## Set up your environment 
-<!-- use less words -->
-* Select your Python interpreter by clicking on the status bar
-
-   <img src=https://raw.githubusercontent.com/microsoft/vscode-python/master/images/InterpreterSelectionZoom.gif width=280 height=100>
-   
-* Configure the debugger through the Debug Activity Bar   
-
-    <img src=https://raw.githubusercontent.com/microsoft/vscode-python/master/images/ConfigureDebugger.gif width=734 height=413>
-
-* Configure tests by running the ``Configure Tests`` command 
-
-    <img src=https://raw.githubusercontent.com/microsoft/vscode-python/master/images/ConfigureTests.gif width=734 height=413>
-
-
-
-
-For more information you can:
-* [Follow our Python tutorial](https://code.visualstudio.com/docs/python/python-tutorial#_prerequisites) with step-by-step instructions for building a simple app.
-* Check out the [Python documentation on the VS Code site](https://code.visualstudio.com/docs/languages/python) for general information about using the extension.
+Install python ...
 
 ## Useful commands
 Open the Command Palette (Command+Shift+P on macOS and Ctrl+Shift+P on Windows/Linux) and type in one of the following commands:
@@ -52,7 +33,7 @@ Learn more about the rich features of the Python extension:
 * [Linting](https://code.visualstudio.com/docs/python/linting): Get additional code analysis with Pylint, Flake8 and more
 * [Code formatting](https://code.visualstudio.com/docs/python/editing#_formatting): Format your code with black, autopep or yapf
 
-* [Debugging](https://code.visualstudio.com/docs/python/debugging): Debug your Python scripts, web apps, remote or multi-threaded processes   
+* [Debugging](https://code.visualstudio.com/docs/python/debugging): Debug your Python scripts, web apps, remote or multi-threaded processes
 
 * [Testing](https://code.visualstudio.com/docs/python/unit-testing): Run and debug tests through the Test Explorer with unittest, pytest or nose
 

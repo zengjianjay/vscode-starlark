@@ -1,8 +1,8 @@
 {
-    "name": "python",
-    "displayName": "Python",
-    "description": "Linting, Debugging (multi-threaded, remote), Intellisense, code formatting, refactoring, unit tests, snippets, and more.",
-    "version": "2019.11.0-dev",
+    "name": "vscode-starlark",
+    "displayName": "vscode-starlark",
+    "description": "Linting and IntelliSense for Starlark files.",
+    "version": "0.1.0",
     "languageServerVersion": "0.4.24",
     "publisher": "ms-python",
     "author": {
@@ -1372,7 +1372,7 @@
         ],
         "configuration": {
             "type": "object",
-            "title": "Python",
+            "title": "Starlark",
             "properties": {
                 "python.diagnostics.sourceMapsEnabled": {
                     "type": "boolean",
