@@ -4,18 +4,18 @@
     "description": "Linting and IntelliSense for Starlark files.",
     "version": "0.1.0",
     "languageServerVersion": "0.4.24",
-    "publisher": "ms-python",
+    "publisher": "phgn",
     "author": {
-        "name": "Microsoft Corporation"
+        "name": "Peter Hagen"
     },
     "license": "MIT",
-    "homepage": "https://github.com/Microsoft/vscode-python",
+    "homepage": "https://github.com/phgn0/vscode-starklark",
     "repository": {
         "type": "git",
-        "url": "https://github.com/Microsoft/vscode-python"
+        "url": "https://github.com/phgn0/vscode-starklark"
     },
     "bugs": {
-        "url": "https://github.com/Microsoft/vscode-python/issues"
+        "url": "https://github.com/phgn0/vscode-starklark/issues"
     },
     "qna": "https://stackoverflow.com/questions/tagged/visual-studio-code+python",
     "icon": "icon.png",
