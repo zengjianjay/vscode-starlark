@@ -21,7 +21,7 @@ import { CellState, ICell as IVscCell, IGatherExecution, INotebookExecutionLogge
  */
 @injectable()
 export class GatherExecution implements IGatherExecution, INotebookExecutionLogger {
-    private _executionSlicer: ExecutionLogSlicer<IGatherCell>;
+    private _executionSlicer: ExecutionLogSlicer;
     private dataflowAnalyzer: DataflowAnalyzer;
     private _enabled: boolean;
 
@@ -86,7 +86,7 @@ export class GatherExecution implements IGatherExecution, INotebookExecutionLogg
         const defaultCellMarker = this.configService.getSettings().datascience.defaultCellMarker || Identifiers.DefaultCodeCellMarker;
 
         // Call internal slice method
-        const slices = this._executionSlicer.sliceAllExecutions(gatherCell.persistentId);
+        const slices = this._executionSlicer.sliceAllExecutions(gatherCell);
         const program = slices.length > 0 ? slices[0].cellSlices.reduce(concat, '').replace(/#%%/g, defaultCellMarker) : '';
 
         // Add a comment at the top of the file explaining what gather does

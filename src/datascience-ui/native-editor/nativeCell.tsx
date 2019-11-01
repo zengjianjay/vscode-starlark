@@ -574,12 +574,10 @@ export class NativeCell extends React.Component<INativeCellProps> {
             this.props.stateController.runBelow(cellId);
             this.props.stateController.sendCommand(NativeCommandType.RunBelow, 'mouse');
         };
-        const gatherDisabled = () => {
-            return this.props.cellVM.cell.data.execution_count === null ||
-            this.props.cellVM.hasBeenRun === null ||
-            this.props.cellVM.hasBeenRun === false ||
-            getSettings().enableGather === false;
-        };
+        const gatherDisabled =  this.props.cellVM.cell.data.execution_count === null ||
+                                this.props.cellVM.hasBeenRun === null ||
+                                this.props.cellVM.hasBeenRun === false ||
+                                getSettings().enableGather === false;
         const canRunAbove = this.props.stateController.canRunAbove(cellId);
         const canRunBelow = this.props.cellVM.cell.state === CellState.finished || this.props.cellVM.cell.state === CellState.error;
         const switchTooltip = this.props.cellVM.cell.data.cell_type === 'code' ? getLocString('DataScience.switchToMarkdown', 'Change to markdown') :
@@ -606,7 +604,7 @@ export class NativeCell extends React.Component<INativeCellProps> {
                 <ImageButton baseTheme={this.props.baseTheme} onClick={deleteCell} tooltip={getLocString('DataScience.deleteCell', 'Delete cell')}>
                     <Image baseTheme={this.props.baseTheme} class='image-button-image' image={ImageName.Delete} />
                 </ImageButton>
-                <ImageButton baseTheme={this.props.baseTheme} onClick={gatherCell} tooltip={getLocString('DataScience.gatherCell', 'Gather code to generate this cell')} hidden={gatherDisabled()}>
+                <ImageButton baseTheme={this.props.baseTheme} onClick={gatherCell} tooltip={getLocString('DataScience.gatherCell', 'Gather code to generate this cell')} disabled={gatherDisabled}>
                     <Image baseTheme={this.props.baseTheme} class='image-button-image' image={ImageName.GatherCode} />
                 </ImageButton>
             </div>
