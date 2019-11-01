@@ -604,7 +604,7 @@ export class NativeCell extends React.Component<INativeCellProps> {
                 <ImageButton baseTheme={this.props.baseTheme} onClick={deleteCell} tooltip={getLocString('DataScience.deleteCell', 'Delete cell')}>
                     <Image baseTheme={this.props.baseTheme} class='image-button-image' image={ImageName.Delete} />
                 </ImageButton>
-                <ImageButton baseTheme={this.props.baseTheme} onClick={gatherCell} tooltip={getLocString('DataScience.gatherCell', 'Gather code to generate this cell')} disabled={gatherDisabled}>
+                <ImageButton baseTheme={this.props.baseTheme} onClick={gatherCell} tooltip={getLocString('DataScience.gatherCell', 'Gather code to generate this cell')} hidden={gatherDisabled}>
                     <Image baseTheme={this.props.baseTheme} class='image-button-image' image={ImageName.GatherCode} />
                 </ImageButton>
             </div>

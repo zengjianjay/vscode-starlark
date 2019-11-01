@@ -181,10 +181,6 @@ export abstract class InteractiveBase extends WebViewHost<IInteractiveWindowMapp
                 this.handleMessage(message, payload, this.copyCode);
                 break;
 
-            case InteractiveWindowMessages.ConnectedToNotebook:
-                this.connectedToJupyter();
-                break;
-
             case InteractiveWindowMessages.RestartKernel:
                 this.restartKernel().ignoreErrors();
                 break;
@@ -322,13 +318,6 @@ export abstract class InteractiveBase extends WebViewHost<IInteractiveWindowMapp
     @captureTelemetry(Telemetry.DeleteAllCells)
     public removeAllCells() {
         this.postMessage(InteractiveWindowMessages.DeleteAllCells).ignoreErrors();
-    }
-
-    @captureTelemetry(Telemetry.ConnectedToNotebook)
-    public connectedToJupyter() {
-        if (this.getNotebook) {
-            this.postMessage(InteractiveWindowMessages.ConnectedToNotebook, this.getNotebook()).ignoreErrors();
-        }
     }
 
     @captureTelemetry(Telemetry.RestartKernel)

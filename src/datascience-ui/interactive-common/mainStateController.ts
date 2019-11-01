@@ -977,7 +977,7 @@ export class MainStateController implements IMessageHandler {
             .map((cvm, i) => { return { cvm, i }; })
             .filter(s => s.cvm.cell.data.cell_type === 'code');
 
-        if (executableCells && executableCells.length) {
+        if (executableCells) {
             executableCells.forEach(s => {
                 if (newVMs[s.i].hasBeenRun && newVMs[s.i].hasBeenRun === true) {
                     newVMs[s.i] = immutable.updateIn(s.cvm, ['hasBeenRun'], () => false);
