@@ -2588,16 +2588,7 @@
                 "fileMatch": "meta.yaml",
                 "url": "./schemas/conda-meta.json"
             }
-        ],
-        "views": {
-            "test": [
-                {
-                    "id": "python_tests",
-                    "name": "PYTHON",
-                    "when": "testsDiscovered"
-                }
-            ]
-        }
+        ]
     },
     "scripts": {
         "package": "gulp clean && gulp prePublishBundle && vsce package -o ms-python-insiders.vsix",
