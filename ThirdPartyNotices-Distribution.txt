@@ -491,7 +491,6 @@ Microsoft Python extension for Visual Studio Code incorporates third party mater
 484. yallist 2.1.2 (https://registry.npmjs.org/yallist/-/yallist-2.1.2.tgz)
 485. zone.js 0.7.6 (https://registry.npmjs.org/zone.js/-/zone.js-0.7.6.tgz)
 
-
 %% @babel/code-frame 7.0.0 NOTICES AND INFORMATION BEGIN HERE (https://registry.npmjs.org/@babel/code-frame/-/code-frame-7.0.0.tgz)
 =========================================
 MIT License

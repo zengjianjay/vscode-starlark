@@ -772,6 +772,13 @@
                 "configuration": "./syntaxes/starlark.configuration.json"
             }
         ],
+        "grammars": [
+            {
+                "language": "starlark",
+                "scopeName": "source.starlark",
+                "path": "./syntaxes/starlark.tmLanguage.json"
+            }
+        ],
         "views": {
             "test": [
                 {
