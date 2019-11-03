@@ -1,16 +1,11 @@
 import { DocumentFilter } from 'vscode';
 
-export const PYTHON_LANGUAGE = 'python';
+export const PYTHON_LANGUAGE = 'starlark';
 
 export const JUPYTER_LANGUAGE = 'jupyter';
 
-export const PYTHON: DocumentFilter[] = [
-    { scheme: 'file', language: PYTHON_LANGUAGE },
-    { scheme: 'untitled', language: PYTHON_LANGUAGE }
-];
-export const PYTHON_ALLFILES = [
-    { language: PYTHON_LANGUAGE }
-];
+export const PYTHON: DocumentFilter[] = [{ scheme: 'file', language: PYTHON_LANGUAGE }, { scheme: 'untitled', language: PYTHON_LANGUAGE }];
+export const PYTHON_ALLFILES = [{ language: PYTHON_LANGUAGE }];
 
 export const PVSC_EXTENSION_ID = 'phgn.vscode-starlark';
 export const CODE_RUNNER_EXTENSION_ID = 'formulahendry.code-runner';
