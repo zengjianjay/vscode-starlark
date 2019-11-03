@@ -1,0 +1,3 @@
+[submodule "starlark/jedi"]
+	path = starlark/jedi
+	url = git@github.com:phgn0/jedi.git
