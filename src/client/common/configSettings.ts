@@ -163,9 +163,7 @@ export class PythonSettings implements IPythonSettings {
             if (typeof this.jediPath === 'string' && this.jediPath.length > 0) {
                 this.jediPath = getAbsolutePath(systemVariables.resolveAny(this.jediPath), workspaceRoot);
             } else {
-                // use default
-                const extensionRootDir = path.dirname(path.dirname(path.dirname(__dirname)));
-                this.jediPath = `${extensionRootDir}/starlark/jedi`;
+                this.jediPath = '';     // will be set to bundled jedi where used (jediProxy.ts)
             }
             this.jediMemoryLimit = pythonSettings.get<number>('jediMemoryLimit')!;
         }

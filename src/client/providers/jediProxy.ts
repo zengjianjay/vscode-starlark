@@ -355,7 +355,7 @@ export class JediProxy implements Disposable {
                 this.proc.kill();
             }
             // tslint:disable-next-line:no-empty
-        } catch (ex) {}
+        } catch (ex) { }
         this.proc = undefined;
     }
 
@@ -378,6 +378,10 @@ export class JediProxy implements Disposable {
         if (typeof this.pythonSettings.jediPath === 'string' && this.pythonSettings.jediPath.length > 0) {
             args.push('custom');
             args.push(this.pythonSettings.jediPath);
+        } else {
+            // use default
+            args.push('custom');
+            args.push(`${this.extensionRootDir}/starlark/jedi`);
         }
         const result = pythonProcess.execObservable(args, { cwd });
         this.proc = result.proc;
@@ -705,14 +709,14 @@ export class JediProxy implements Disposable {
         // Add support for paths relative to workspace.
         const extraPaths = this.pythonSettings.autoComplete
             ? this.pythonSettings.autoComplete.extraPaths.map(extraPath => {
-                  if (path.isAbsolute(extraPath)) {
-                      return extraPath;
-                  }
-                  if (typeof this.workspacePath !== 'string') {
-                      return '';
-                  }
-                  return path.join(this.workspacePath, extraPath);
-              })
+                if (path.isAbsolute(extraPath)) {
+                    return extraPath;
+                }
+                if (typeof this.workspacePath !== 'string') {
+                    return '';
+                }
+                return path.join(this.workspacePath, extraPath);
+            })
             : [];
 
         // Always add workspace path into extra paths.
