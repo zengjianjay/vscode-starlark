@@ -68,10 +68,13 @@ export class Pylint extends BaseLinter {
                 + ',E1304,E1305,E1306,E1310,E1700,E1701'
             ];
         }
+        const extensionRootDir = path.dirname(path.dirname(path.dirname(__dirname)));     // go upwards from this file's location
         const args = [
             '--msg-template=\'{line},{column},{category},{symbol}:{msg}\'',
             '--reports=n',
             '--output-format=text',
+            '--load-plugins',
+            `${extensionRootDir}/starlark/pylint/starlarkPlugin`,
             uri.fsPath
         ];
         const messages = await this.run(minArgs.concat(args), document, cancellation, REGEX);
