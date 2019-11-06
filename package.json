@@ -1,8 +1,8 @@
 {
     "name": "vscode-starlark",
     "displayName": "vscode-starlark",
-    "description": "Linting and IntelliSense for Starlark files.",
-    "version": "0.2.0",
+    "description": "IntelliSense for Starlark files",
+    "version": "0.2.1",
     "languageServerVersion": "0.4.24",
     "publisher": "phgn",
     "author": {
@@ -27,10 +27,11 @@
         "vscode": "^1.38.0"
     },
     "keywords": [
-        "python",
-        "django",
-        "unittest",
-        "multi-root ready"
+        "starlark",
+        "skylark",
+        "bazel",
+        "intellisense",
+        "linting"
     ],
     "categories": [
         "Programming Languages",
@@ -41,9 +42,8 @@
         "Other"
     ],
     "activationEvents": [
-        "onLanguage:python",
         "onLanguage:starlark",
-        "onDebugResolve:python"
+        "onDebugResolve:starlark"
     ],
     "main": "./out/client/extension",
     "contributes": {
