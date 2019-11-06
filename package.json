@@ -2,7 +2,7 @@
     "name": "vscode-starlark",
     "displayName": "vscode-starlark",
     "description": "Linting and IntelliSense for Starlark files.",
-    "version": "0.1.0",
+    "version": "0.2.0",
     "languageServerVersion": "0.4.24",
     "publisher": "phgn",
     "author": {
@@ -790,7 +790,7 @@
         }
     },
     "scripts": {
-        "package": "gulp clean && gulp prePublishBundle && vsce package -o ms-python-insiders.vsix",
+        "package": "gulp clean && gulp prePublishBundle && vsce package -o vscode-starlark.vsix",
         "compile": "tsc -watch -p ./",
         "compile-webviews-watch": "npx npx -n --max_old_space_size=4096 webpack --config webpack.datascience-ui.config.js --watch",
         "dump-datascience-webpack-stats": "npx -n --max_old_space_size=4096 webpack --config webpack.datascience-ui.config.js --profile --json > tmp/ds-stats.json",
