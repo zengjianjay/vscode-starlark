@@ -1,4 +1,4 @@
-# Python extension for Visual Studio Code
+# Starlark extension for Visual Studio Code
 
 A [Visual Studio Code](https://code.visualstudio.com/) extension with rich support for the [Starlark language](https://github.com/bazelbuild/starlark).
 
