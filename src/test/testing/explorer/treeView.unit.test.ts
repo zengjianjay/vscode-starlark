@@ -33,7 +33,7 @@ suite('Unit Tests Test Explorer Tree View', () => {
 
     test('Activation will create the treeview', async () => {
         await treeViewService.activate();
-        verify(appShell.createTreeView('python_tests', deepEqual({ showCollapseAll: true, treeDataProvider: instance(treeViewProvider) }))).once();
+        verify(appShell.createTreeView('starlark_tests', deepEqual({ showCollapseAll: true, treeDataProvider: instance(treeViewProvider) }))).once();
     });
     test('Activation will add command handlers', async () => {
         await treeViewService.activate();
@@ -45,7 +45,7 @@ suite('Unit Tests Test Explorer Tree View', () => {
             .setup(t => t.reveal(typemoq.It.isAny()))
             .returns(() => Promise.resolve())
             .verifiable(typemoq.Times.once());
-        when(appShell.createTreeView('python_tests', anything())).thenReturn(treeView.object);
+        when(appShell.createTreeView('starlark_tests', anything())).thenReturn(treeView.object);
 
         await treeViewService.activate();
         await treeViewService.onRevealTestItem(data);

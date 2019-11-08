@@ -28,7 +28,7 @@ export class TreeViewService implements IExtensionSingleActivationService, IDisp
         this.disposables.forEach(d => d.dispose());
     }
     public async activate(): Promise<void> {
-        this._treeView = this.appShell.createTreeView('python_tests', { showCollapseAll: true, treeDataProvider: this.treeViewProvider });
+        this._treeView = this.appShell.createTreeView('starlark_tests', { showCollapseAll: true, treeDataProvider: this.treeViewProvider });
         this.disposables.push(this._treeView);
         this.disposables.push(this.commandManager.registerCommand(Commands.Test_Reveal_Test_Item, this.onRevealTestItem, this));
     }
