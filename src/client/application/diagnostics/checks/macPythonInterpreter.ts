@@ -142,20 +142,20 @@ export class InvalidMacPythonInterpreterService extends BaseDiagnosticsService {
         switch (diagnostic.code) {
             case DiagnosticCodes.MacInterpreterSelectedAndHaveOtherInterpretersDiagnostic: {
                 return [
-                    {
-                        prompt: 'Select Python Interpreter',
-                        command: commandFactory.createCommand(diagnostic, {
-                            type: 'executeVSCCommand',
-                            options: 'python.setInterpreter'
-                        })
-                    },
-                    {
-                        prompt: 'Do not show again',
-                        command: commandFactory.createCommand(diagnostic, {
-                            type: 'ignore',
-                            options: DiagnosticScope.Global
-                        })
-                    }
+                    // {
+                    //     prompt: 'Select Python Interpreter',
+                    //     command: commandFactory.createCommand(diagnostic, {
+                    //         type: 'executeVSCCommand',
+                    //         options: 'python.setInterpreter'
+                    //     })
+                    // },
+                    // {
+                    //     prompt: 'Do not show again',
+                    //     command: commandFactory.createCommand(diagnostic, {
+                    //         type: 'ignore',
+                    //         options: DiagnosticScope.Global
+                    //     })
+                    // }
                 ];
             }
             case DiagnosticCodes.MacInterpreterSelectedAndNoOtherInterpretersDiagnostic: {

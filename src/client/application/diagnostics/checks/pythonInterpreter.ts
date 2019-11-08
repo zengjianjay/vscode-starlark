@@ -104,13 +104,13 @@ export class InvalidPythonInterpreterService extends BaseDiagnosticsService {
             }
             case DiagnosticCodes.NoCurrentlySelectedPythonInterpreterDiagnostic: {
                 return [
-                    {
-                        prompt: 'Select Python Interpreter',
-                        command: commandFactory.createCommand(diagnostic, {
-                            type: 'executeVSCCommand',
-                            options: 'python.setInterpreter'
-                        })
-                    }
+                    // {
+                    //     prompt: 'Select Python Interpreter',
+                    //     command: commandFactory.createCommand(diagnostic, {
+                    //         type: 'executeVSCCommand',
+                    //         options: 'python.setInterpreter'
+                    //     })
+                    // }
                 ];
             }
             default: {

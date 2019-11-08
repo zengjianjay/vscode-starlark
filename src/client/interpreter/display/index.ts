@@ -10,7 +10,7 @@ import { IInterpreterDisplay, IInterpreterHelper, IInterpreterService, PythonInt
 // tslint:disable-next-line:completed-docs
 @injectable()
 export class InterpreterDisplay implements IInterpreterDisplay {
-    private readonly statusBar: StatusBarItem;
+    // private readonly statusBar: StatusBarItem;
     private readonly helper: IInterpreterHelper;
     private readonly workspaceService: IWorkspaceService;
     private readonly pathUtils: IPathUtils;
@@ -29,9 +29,9 @@ export class InterpreterDisplay implements IInterpreterDisplay {
         const application = serviceContainer.get<IApplicationShell>(IApplicationShell);
         const disposableRegistry = serviceContainer.get<Disposable[]>(IDisposableRegistry);
 
-        this.statusBar = application.createStatusBarItem(StatusBarAlignment.Left, 100);
-        this.statusBar.command = 'python.setInterpreter';
-        disposableRegistry.push(this.statusBar);
+        // this.statusBar = application.createStatusBarItem(StatusBarAlignment.Left, 100);
+        // this.statusBar.command = 'python.setInterpreter';
+        // disposableRegistry.push(this.statusBar);
 
         this.interpreterService.onDidChangeInterpreterInformation(this.onDidChangeInterpreterInformation, this, disposableRegistry);
     }
@@ -52,20 +52,20 @@ export class InterpreterDisplay implements IInterpreterDisplay {
         }
     }
     private async updateDisplay(workspaceFolder?: Uri) {
-        await this.autoSelection.autoSelectInterpreter(workspaceFolder);
-        const interpreter = await this.interpreterService.getActiveInterpreter(workspaceFolder);
-        this.currentlySelectedWorkspaceFolder = workspaceFolder;
-        if (interpreter) {
-            this.statusBar.color = '';
-            this.statusBar.tooltip = this.pathUtils.getDisplayName(interpreter.path, workspaceFolder ? workspaceFolder.fsPath : undefined);
-            this.statusBar.text = interpreter.displayName!;
-            this.currentlySelectedInterpreterPath = interpreter.path;
-        } else {
-            this.statusBar.tooltip = '';
-            this.statusBar.color = 'yellow';
-            this.statusBar.text = '$(alert) Select Python Interpreter';
-            this.currentlySelectedInterpreterPath = undefined;
-        }
-        this.statusBar.show();
+        // await this.autoSelection.autoSelectInterpreter(workspaceFolder);
+        // const interpreter = await this.interpreterService.getActiveInterpreter(workspaceFolder);
+        // this.currentlySelectedWorkspaceFolder = workspaceFolder;
+        // if (interpreter) {
+        //     this.statusBar.color = '';
+        //     this.statusBar.tooltip = this.pathUtils.getDisplayName(interpreter.path, workspaceFolder ? workspaceFolder.fsPath : undefined);
+        //     this.statusBar.text = interpreter.displayName!;
+        //     this.currentlySelectedInterpreterPath = interpreter.path;
+        // } else {
+        //     this.statusBar.tooltip = '';
+        //     this.statusBar.color = 'yellow';
+        //     this.statusBar.text = '$(alert) Select Python Interpreter';
+        //     this.currentlySelectedInterpreterPath = undefined;
+        // }
+        // this.statusBar.show();
     }
 }
