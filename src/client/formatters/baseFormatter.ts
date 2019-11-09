@@ -94,7 +94,7 @@ export abstract class BaseFormatter {
             const isInstalled = await installer.isInstalled(this.product, resource);
             if (!isInstalled) {
                 customError += `\nYou could either install the '${this.Id}' formatter, turn it off or use another formatter.`;
-                installer.promptToInstall(this.product, resource).catch(ex => traceError('Python Extension: promptToInstall', ex));
+                installer.promptToInstall(this.product, resource).catch(ex => traceError('Starlark Extension: promptToInstall', ex));
             }
         }
 

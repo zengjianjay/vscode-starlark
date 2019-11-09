@@ -136,7 +136,7 @@ export class UnitTestConfigurationService implements ITestConfigurationService {
             try {
                 await delayed.apply(cfg);
             } catch (exc) {
-                traceError('Python Extension: applying unit test config updates', exc);
+                traceError('Starlark Extension: applying unit test config updates', exc);
                 telemetryProps.failed = true;
             }
         } finally {

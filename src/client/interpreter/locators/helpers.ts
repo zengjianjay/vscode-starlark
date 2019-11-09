@@ -13,7 +13,7 @@ export function lookForInterpretersInDirectory(pathToCheck: string): Promise<str
     return fsReaddirAsync(pathToCheck)
         .then(subDirs => subDirs.filter(fileName => CheckPythonInterpreterRegEx.test(path.basename(fileName))))
         .catch(err => {
-            traceError('Python Extension (lookForInterpretersInDirectory.fsReaddirAsync):', err);
+            traceError('Starlark Extension (lookForInterpretersInDirectory.fsReaddirAsync):', err);
             return [] as string[];
         });
 }

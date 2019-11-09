@@ -156,7 +156,7 @@ export class JupyterCommandFinder {
             const files = await this.fileSystem.getFiles(pathToCheck);
             return files ? files.filter(s => RegExpValues.CheckJupyterRegEx.test(path.basename(s))) : [];
         } catch (err) {
-            this.logger.logWarning('Python Extension (fileSystem.getFiles):', err);
+            this.logger.logWarning('Starlark Extension (fileSystem.getFiles):', err);
         }
         return [] as string[];
     }

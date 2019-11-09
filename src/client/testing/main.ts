@@ -188,7 +188,7 @@ export class UnitTestManagementService implements ITestManagementService, Dispos
             this.testResultDisplay = this.serviceContainer.get<ITestResultDisplay>(ITestResultDisplay);
         }
         const discoveryPromise = testManager.discoverTests(cmdSource, ignoreCache, quietMode, userInitiated, clearTestStatus);
-        this.testResultDisplay.displayDiscoverStatus(discoveryPromise, quietMode).catch(ex => traceError('Python Extension: displayDiscoverStatus', ex));
+        this.testResultDisplay.displayDiscoverStatus(discoveryPromise, quietMode).catch(ex => traceError('Starlark Extension: displayDiscoverStatus', ex));
         await discoveryPromise;
     }
     public async stopTests(resource: Uri) {

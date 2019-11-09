@@ -45,7 +45,7 @@ export class BaseVirtualEnvService extends CacheableLocatorService {
             .then(interpreters => Promise.all(interpreters.map(interpreter => this.getVirtualEnvDetails(interpreter, resource))))
             .then(interpreters => interpreters.filter(interpreter => !!interpreter).map(interpreter => interpreter!))
             .catch((err) => {
-                traceError('Python Extension (lookForInterpretersInVenvs):', err);
+                traceError('Starlark Extension (lookForInterpretersInVenvs):', err);
                 // Ignore exceptions.
                 return [] as PythonInterpreter[];
             });
@@ -63,7 +63,7 @@ export class BaseVirtualEnvService extends CacheableLocatorService {
                     return scriptOrBinDirs.length === 1 ? scriptOrBinDirs[0] : '';
                 })
                 .catch((err) => {
-                    traceError('Python Extension (getProspectiveDirectoriesForLookup):', err);
+                    traceError('Starlark Extension (getProspectiveDirectoriesForLookup):', err);
                     // Ignore exceptions.
                     return '';
                 }));

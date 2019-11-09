@@ -83,7 +83,7 @@ export class CondaEnvFileService extends CacheableLocatorService {
             }
             return interpreters;
         } catch (err) {
-            this.logger.logError('Python Extension (getEnvironmentsFromFile.readFile):', err);
+            this.logger.logError('Starlark Extension (getEnvironmentsFromFile.readFile):', err);
             // Ignore errors in reading the file.
             return [] as PythonInterpreter[];
         }

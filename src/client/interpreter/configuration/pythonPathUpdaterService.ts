@@ -36,7 +36,7 @@ export class PythonPathUpdaterService implements IPythonPathUpdaterServiceManage
         }
         // do not wait for this to complete
         this.sendTelemetry(stopWatch.elapsedTime, failed, trigger, pythonPath)
-            .catch(ex => traceError('Python Extension: sendTelemetry', ex));
+            .catch(ex => traceError('Starlark Extension: sendTelemetry', ex));
     }
     private async sendTelemetry(duration: number, failed: boolean, trigger: 'ui' | 'shebang' | 'load', pythonPath: string) {
         const telemtryProperties: PythonInterpreterTelemetry = {

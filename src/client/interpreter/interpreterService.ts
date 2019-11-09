@@ -264,7 +264,7 @@ export class InterpreterService implements Disposable, IInterpreterService {
             this.didChangeInterpreterEmitter.fire();
             const interpreterDisplay = this.serviceContainer.get<IInterpreterDisplay>(IInterpreterDisplay);
             interpreterDisplay.refresh()
-                .catch(ex => traceError('Python Extension: display.refresh', ex));
+                .catch(ex => traceError('Starlark Extension: display.refresh', ex));
         }
     }
     private async collectInterpreterDetails(pythonPath: string, resource: Uri | undefined) {

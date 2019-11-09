@@ -156,7 +156,7 @@ async function activateUnsafe(context: ExtensionContext): Promise<IExtensionApi>
     const workspaceService = serviceContainer.get<IWorkspaceService>(IWorkspaceService);
     const interpreterManager = serviceContainer.get<IInterpreterService>(IInterpreterService);
     interpreterManager.refresh(workspaceService.hasWorkspaceFolders ? workspaceService.workspaceFolders![0].uri : undefined)
-        .catch(ex => traceError('Python Extension: interpreterManager.refresh', ex));
+        .catch(ex => traceError('Starlark Extension: interpreterManager.refresh', ex));
 
     // Activate data science features
     const dataScience = serviceManager.get<IDataScience>(IDataScience);

@@ -91,7 +91,7 @@ export class LocalDebugClient extends DebugClient<LaunchRequestArguments> {
                     this.debugServer!.DebugClientConnected
                         .then(resolve)
                         // tslint:disable-next-line: no-console
-                        .catch(ex => console.error('Python Extension: debugServer.DebugClientConnected', ex));
+                        .catch(ex => console.error('Starlark Extension: debugServer.DebugClientConnected', ex));
                 }
             }
         });

@@ -151,7 +151,7 @@ function extractName(textEditor: vscode.TextEditor, newName: string,
     }).catch(error => {
         if (error === 'Not installed') {
             installer.promptToInstall(Product.rope, textEditor.document.uri)
-                .catch(ex => traceError('Python Extension: simpleRefactorProvider.promptToInstall', ex));
+                .catch(ex => traceError('Starlark Extension: simpleRefactorProvider.promptToInstall', ex));
             return Promise.reject('');
         }
         let errorMessage = `${error}`;

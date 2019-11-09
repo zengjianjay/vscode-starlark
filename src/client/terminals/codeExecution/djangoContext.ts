@@ -24,7 +24,7 @@ export class DjangoContextInitializer implements Disposable {
 
         this.isDjangoProject = new ContextKey('python.isDjangoProject', commandManager);
         this.ensureContextStateIsSet()
-            .catch(ex => traceError('Python Extension: ensureState', ex));
+            .catch(ex => traceError('Starlark Extension: ensureState', ex));
         this.disposables.push(this.workpaceService.onDidChangeWorkspaceFolders(() => this.updateContextKeyBasedOnActiveWorkspace()));
     }
 

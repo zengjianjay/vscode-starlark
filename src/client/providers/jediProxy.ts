@@ -278,7 +278,7 @@ export class JediProxy implements Disposable {
                     this.pidUsageFailures.counter = 0;
                     this.pidUsageFailures.timer.reset();
                 }
-                traceError('Python Extension: (pidusage)', err);
+                traceError('Starlark Extension: (pidusage)', err);
             } else {
                 const limit = Math.min(Math.max(this.pythonSettings.jediMemoryLimit, 1024), 8192);
                 let restartJedi = false;
@@ -694,7 +694,7 @@ export class JediProxy implements Disposable {
             const filePaths = await Promise.all(filePathPromises);
             return filePaths.concat(...pythonPaths, ...resolvedPaths).filter(p => p.length > 0);
         } catch (ex) {
-            traceError('Python Extension: jediProxy.filePaths', ex);
+            traceError('Starlark Extension: jediProxy.filePaths', ex);
             return [];
         }
     }

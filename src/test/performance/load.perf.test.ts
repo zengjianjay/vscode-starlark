@@ -25,7 +25,7 @@ suite('Activation Times', () => {
         test(`Capture Extension Activation Times (Version: ${process.env.ACTIVATION_TIMES_EXT_VERSION}, sample: ${sampleCounter})`, async () => {
             const pythonExtension = extensions.getExtension(PVSC_EXTENSION_ID);
             if (!pythonExtension) {
-                throw new Error('Python Extension not found');
+                throw new Error('Starlark Extension not found');
             }
             const stopWatch = new StopWatch();
             await pythonExtension!.activate();

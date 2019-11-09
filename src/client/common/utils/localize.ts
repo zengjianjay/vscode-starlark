@@ -27,7 +27,7 @@ export namespace Diagnostics {
 export namespace Common {
     export const canceled = localize('Common.canceled', 'Canceled');
     export const gotIt = localize('Common.gotIt', 'Got it!');
-    export const loadingExtension = localize('Common.loadingPythonExtension', 'Python extension loading...');
+    export const loadingExtension = localize('Common.loadingPythonExtension', 'Starlark Extension loading...');
     export const openOutputPanel = localize('Common.openOutputPanel', 'Show output');
     export const noIWillDoItLater = localize('Common.noIWillDoItLater', 'No, I will do it later');
     export const notNow = localize('Common.notNow', 'Not now');

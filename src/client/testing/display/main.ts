@@ -172,7 +172,7 @@ export class TestResultDisplay implements ITestResultDisplay {
                 .showInformationMessage('No tests discovered, please check the configuration settings for the tests.', Testing.disableTests(), Testing.configureTests())
                 .then(item => {
                     if (item === Testing.disableTests()) {
-                        this.disableTests().catch(ex => traceError('Python Extension: disableTests', ex));
+                        this.disableTests().catch(ex => traceError('Starlark Extension: disableTests', ex));
                     } else if (item === Testing.configureTests()) {
                         this.cmdManager.executeCommand(constants.Commands.Tests_Configure, undefined, undefined, undefined).then(noop);
                     }

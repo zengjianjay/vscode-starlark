@@ -62,7 +62,7 @@ export class PythonRenameProvider implements RenameProvider {
             if (reason === 'Not installed') {
                 const installer = this.serviceContainer.get<IInstaller>(IInstaller);
                 installer.promptToInstall(Product.rope, document.uri)
-                    .catch(ex => traceError('Python Extension: promptToInstall', ex));
+                    .catch(ex => traceError('Starlark Extension: promptToInstall', ex));
                 return Promise.reject('');
             } else {
                 window.showErrorMessage(reason);
