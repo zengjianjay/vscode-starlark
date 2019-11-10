@@ -24,7 +24,8 @@ export class CommandManager implements ICommandManager {
      * @return Disposable which unregisters this command on disposal.
      */
     public registerCommand<E extends keyof ICommandNameArgumentTypeMapping, U extends ICommandNameArgumentTypeMapping[E]>(command: E, callback: (...args: U) => any, thisArg?: any): Disposable {
-        return commands.registerCommand(command, callback as any, thisArg);
+        // return commands.registerCommand(command, callback as any, thisArg);
+        return null as unknown as Disposable
     }
 
     /**
@@ -42,7 +43,8 @@ export class CommandManager implements ICommandManager {
      * @return Disposable which unregisters this command on disposal.
      */
     public registerTextEditorCommand(command: string, callback: (textEditor: TextEditor, edit: TextEditorEdit, ...args: any[]) => void, thisArg?: any): Disposable {
-        return commands.registerTextEditorCommand(command, callback, thisArg);
+        // return commands.registerTextEditorCommand(command, callback, thisArg);
+        return null as unknown as Disposable
     }
 
     /**

@@ -116,28 +116,28 @@ export class InvalidPythonPathInDebuggerService extends BaseDiagnosticsService
         switch (diagnostic.code) {
             case DiagnosticCodes.InvalidPythonPathInDebuggerSettingsDiagnostic: {
                 return [
-                    {
-                        prompt: 'Select Python Interpreter',
-                        command: this.commandFactory.createCommand(diagnostic, {
-                            type: 'executeVSCCommand',
-                            options: 'python.setInterpreter'
-                        })
-                    }
+                    // {
+                    //     prompt: 'Select Python Interpreter',
+                    //     command: this.commandFactory.createCommand(diagnostic, {
+                    //         type: 'executeVSCCommand',
+                    //         options: 'python.setInterpreter'
+                    //     })
+                    // }
                 ];
             }
             case DiagnosticCodes.InvalidPythonPathInDebuggerLaunchDiagnostic: {
                 return [
-                    {
-                        prompt: 'Open launch.json',
-                        command: {
-                            diagnostic,
-                            invoke: async (): Promise<void> => {
-                                const launchJson = this.getLaunchJsonFile(workspc.workspaceFolders![0]);
-                                const doc = await this.documentManager.openTextDocument(launchJson);
-                                await this.documentManager.showTextDocument(doc);
-                            }
-                        }
-                    }
+                    // {
+                    //     prompt: 'Open launch.json',
+                    //     command: {
+                    //         diagnostic,
+                    //         invoke: async (): Promise<void> => {
+                    //             const launchJson = this.getLaunchJsonFile(workspc.workspaceFolders![0]);
+                    //             const doc = await this.documentManager.openTextDocument(launchJson);
+                    //             await this.documentManager.showTextDocument(doc);
+                    //         }
+                    //     }
+                    // }
                 ];
             }
             default: {

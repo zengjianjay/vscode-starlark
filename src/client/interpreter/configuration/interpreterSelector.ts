@@ -30,8 +30,8 @@ export class InterpreterSelector implements IInterpreterSelector {
     }
 
     public initialize() {
-        this.disposables.push(this.commandManager.registerCommand(Commands.Set_Interpreter, this.setInterpreter.bind(this)));
-        this.disposables.push(this.commandManager.registerCommand(Commands.Set_ShebangInterpreter, this.setShebangInterpreter.bind(this)));
+        // this.disposables.push(this.commandManager.registerCommand(Commands.Set_Interpreter, this.setInterpreter.bind(this)));
+        // this.disposables.push(this.commandManager.registerCommand(Commands.Set_ShebangInterpreter, this.setShebangInterpreter.bind(this)));
     }
 
     public async getSuggestions(resourceUri?: Uri) {

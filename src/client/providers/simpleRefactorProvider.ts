@@ -17,27 +17,27 @@ let installer: IInstaller;
 
 export function activateSimplePythonRefactorProvider(context: vscode.ExtensionContext, outputChannel: vscode.OutputChannel, serviceContainer: IServiceContainer) {
     installer = serviceContainer.get<IInstaller>(IInstaller);
-    let disposable = vscode.commands.registerCommand(Commands.Refactor_Extract_Variable, () => {
-        const stopWatch = new StopWatch();
-        const promise = extractVariable(context.extensionPath,
-            vscode.window.activeTextEditor!,
-            vscode.window.activeTextEditor!.selection,
-            // tslint:disable-next-line:no-empty
-            outputChannel, serviceContainer).catch(() => { });
-        sendTelemetryWhenDone(EventName.REFACTOR_EXTRACT_VAR, promise, stopWatch);
-    });
-    context.subscriptions.push(disposable);
+    // let disposable = vscode.commands.registerCommand(Commands.Refactor_Extract_Variable, () => {
+    //     const stopWatch = new StopWatch();
+    //     const promise = extractVariable(context.extensionPath,
+    //         vscode.window.activeTextEditor!,
+    //         vscode.window.activeTextEditor!.selection,
+    //         // tslint:disable-next-line:no-empty
+    //         outputChannel, serviceContainer).catch(() => { });
+    //     sendTelemetryWhenDone(EventName.REFACTOR_EXTRACT_VAR, promise, stopWatch);
+    // });
+    // context.subscriptions.push(disposable);
 
-    disposable = vscode.commands.registerCommand(Commands.Refactor_Extract_Method, () => {
-        const stopWatch = new StopWatch();
-        const promise = extractMethod(context.extensionPath,
-            vscode.window.activeTextEditor!,
-            vscode.window.activeTextEditor!.selection,
-            // tslint:disable-next-line:no-empty
-            outputChannel, serviceContainer).catch(() => { });
-        sendTelemetryWhenDone(EventName.REFACTOR_EXTRACT_FUNCTION, promise, stopWatch);
-    });
-    context.subscriptions.push(disposable);
+    // disposable = vscode.commands.registerCommand(Commands.Refactor_Extract_Method, () => {
+    //     const stopWatch = new StopWatch();
+    //     const promise = extractMethod(context.extensionPath,
+    //         vscode.window.activeTextEditor!,
+    //         vscode.window.activeTextEditor!.selection,
+    //         // tslint:disable-next-line:no-empty
+    //         outputChannel, serviceContainer).catch(() => { });
+    //     sendTelemetryWhenDone(EventName.REFACTOR_EXTRACT_FUNCTION, promise, stopWatch);
+    // });
+    // context.subscriptions.push(disposable);
 }
 
 // Exported for unit testing

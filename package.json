@@ -2,7 +2,7 @@
     "name": "vscode-starlark",
     "displayName": "vscode-starlark",
     "description": "IntelliSense for Starlark files",
-    "version": "0.2.6",
+    "version": "0.2.7",
     "languageServerVersion": "0.4.24",
     "publisher": "phgn",
     "author": {
@@ -782,7 +782,7 @@
         "views": {
             "test": [
                 {
-                    "id": "python_tests",
+                    "id": "starlark_tests",
                     "name": "PYTHON",
                     "when": "testsDiscovered"
                 }
