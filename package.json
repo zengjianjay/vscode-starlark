@@ -2,7 +2,7 @@
     "name": "vscode-starlark",
     "displayName": "vscode-starlark",
     "description": "IntelliSense for Starlark files",
-    "version": "0.2.7",
+    "version": "0.2.8",
     "languageServerVersion": "0.4.24",
     "publisher": "phgn",
     "author": {
