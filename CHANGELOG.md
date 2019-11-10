@@ -3703,7 +3703,7 @@ the following people who contributed code:
 * Don't attempt to install linters when not in a workspace [#42](https://github.com/Microsoft/vscode-python/issues/42)
 * Honour `python.linting.enabled` [#26](https://github.com/Microsoft/vscode-python/issues/26)
 * Don't display message 'Linter pylint is not installed' when changing settings [#260](https://github.com/Microsoft/vscode-python/issues/260)
-* Display a meaningful message if pip is unavailable to install necessary module such as 'pylint' [#266](https://github.com/Microsoft/vscode-python/issues/266)
+* Display a meaningful message if pip is unavailable to install necessary module such as 'pylint-starlark' [#266](https://github.com/Microsoft/vscode-python/issues/266)
 * Improvement environment variable parsing in the debugging (allows for embedded `=`) [#149](https://github.com/Microsoft/vscode-python/issues/149), [#361](https://github.com/Microsoft/vscode-python/issues/361)
 
 ### Debugging

@@ -215,7 +215,7 @@ export class PythonSettings implements IPythonSettings {
             pylamaArgs: [], pylamaEnabled: false, pylamaPath: 'pylama',
             prospectorArgs: [], prospectorEnabled: false, prospectorPath: 'prospector',
             pydocstyleArgs: [], pydocstyleEnabled: false, pydocstylePath: 'pydocstyle',
-            pylintArgs: [], pylintEnabled: false, pylintPath: 'pylint',
+            pylintArgs: [], pylintEnabled: false, pylintPath: 'pylint_starlark',
             pylintCategorySeverity: {
                 convention: DiagnosticSeverity.Hint,
                 error: DiagnosticSeverity.Error,
@@ -241,7 +241,7 @@ export class PythonSettings implements IPythonSettings {
             },
             pylintUseMinimalCheckers: false
         };
-        this.linting.pylintPath = getAbsolutePath(systemVariables.resolveAny(this.linting.pylintPath), workspaceRoot);
+        this.linting.pylintPath = 'pylint_starlark';
         this.linting.flake8Path = getAbsolutePath(systemVariables.resolveAny(this.linting.flake8Path), workspaceRoot);
         this.linting.pycodestylePath = getAbsolutePath(systemVariables.resolveAny(this.linting.pycodestylePath), workspaceRoot);
         this.linting.pylamaPath = getAbsolutePath(systemVariables.resolveAny(this.linting.pylamaPath), workspaceRoot);

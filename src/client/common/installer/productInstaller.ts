@@ -333,7 +333,7 @@ function translateProductToModule(product: Product, purpose: ModuleNamePurpose):
         }
         case Product.pylama: return 'pylama';
         case Product.prospector: return 'prospector';
-        case Product.pylint: return 'pylint';
+        case Product.pylint: return 'pylint-starlark';
         case Product.pytest: return 'pytest';
         case Product.autopep8: return 'autopep8';
         case Product.black: return 'black';

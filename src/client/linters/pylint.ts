@@ -72,8 +72,6 @@ export class Pylint extends BaseLinter {
             '--msg-template=\'{line},{column},{category},{symbol}:{msg}\'',
             '--reports=n',
             '--output-format=text',
-            '--load-plugins',
-            `pylint_starlark_plugin`,
             uri.fsPath
         ];
         const messages = await this.run(minArgs.concat(args), document, cancellation, REGEX);

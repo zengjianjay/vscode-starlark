@@ -37,7 +37,7 @@ export abstract class ModuleInstaller {
 
             if (!currentInterpreter || currentInterpreter.type !== InterpreterType.Unknown) {
                 await terminalService.sendCommand(pythonPath, args);
-            } else if (settings.globalModuleInstallation) {
+            } else if (settings.globalModuleInstallation || true) {
                 if (await this.isPathWritableAsync(path.dirname(pythonPath))) {
                     await terminalService.sendCommand(pythonPath, args);
                 } else {

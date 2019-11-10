@@ -173,7 +173,7 @@ export class LintingSettings {
         this.pydocstyleArgs = [];
 
         this.pylintEnabled = false;
-        this.pylintPath = 'pylint';
+        this.pylintPath = 'pylint_starlark';
         this.pylintArgs = [];
         this.pylintCategorySeverity = {
             convention: DiagnosticSeverity.Hint,
