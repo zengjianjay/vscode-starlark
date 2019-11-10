@@ -187,7 +187,7 @@ export class LinterInstaller extends BaseInstaller {
             return InstallerResponse.Ignore;
         }
 
-        const options = isPylint ? [selectLinter, disableInstallPrompt] : [selectLinter];
+        const options = isPylint ? [disableInstallPrompt] : [selectLinter];
 
         let message = `Linter ${productName} is not installed.`;
         if (this.isExecutableAModule(product, resource)) {
