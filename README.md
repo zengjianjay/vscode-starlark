@@ -5,19 +5,19 @@ Vscode extension that adds intelligent editor features for the [Starlark](https:
 
 - Syntax highlighting
 
-<img src=https://raw.githubusercontent.com/phgn0/vscode-starlark/master/images/syntax.gif width=350 height=150>
+<img src=https://raw.githubusercontent.com/phgn0/vscode-starlark/master/images/syntax.gif width=734 height=230>
 
 - Jump-to-definition and description for function calls
 
-<img src=https://raw.githubusercontent.com/phgn0/vscode-starlark/master/images/funcdoc.gif width=350 height=130>
+<img src=https://raw.githubusercontent.com/phgn0/vscode-starlark/master/images/funcdoc.gif width=734 height=230>
 
 - Code autocomplete
 
-<img src=https://raw.githubusercontent.com/phgn0/vscode-starlark/master/images/autocomplete.gif width=420 height=70>
+<img src=https://raw.githubusercontent.com/phgn0/vscode-starlark/master/images/autocomplete.gif width=734 height=110>
 
 - Linting through pylint
 
-<img src=https://raw.githubusercontent.com/phgn0/vscode-starlark/master/images/linting.gif width=350 height=130>
+<img src=https://raw.githubusercontent.com/phgn0/vscode-starlark/master/images/linting.gif width=734 height=200>
 
 ## Background
 
